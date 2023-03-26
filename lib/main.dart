@@ -26,84 +26,252 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-}
+  List<CardItem> items = [
+    CardItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
+    CardItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
+    CardItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
+    CardItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
+    CardItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
+    CardItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
+  ];
 
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    return Scaffold(
-      body: Column(
-        children: [
-          Text('A random idea:'),
-          Text(appState.current.asLowerCase),
-        ],
-      ),
-    );
-  }
+  List<ProductItem> productList = [
+    ProductItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        title: "UNIQLO 特級輕羽絨外套",
+        subtitle: "NT\$999"),
+    ProductItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        title: "UNIQLO 特級輕羽絨外套",
+        subtitle: "NT\$999"),
+    ProductItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        title: "UNIQLO 特級輕羽絨外套",
+        subtitle: "NT\$999"),
+    ProductItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        title: "UNIQLO 特級輕羽絨外套",
+        subtitle: "NT\$999"),
+    ProductItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        title: "UNIQLO 特級輕羽絨外套",
+        subtitle: "NT\$999"),
+    ProductItem(
+        urlImg:
+            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        title: "UNIQLO 特級輕羽絨外套",
+        subtitle: "NT\$999"),
+  ];
 }
 
 class Ch7RowColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Row and Column'),
+        // title: Image.asset('images/stylish_logo.png',fit: BoxFit.cover),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/stylish_logo.png',
+              fit: BoxFit.contain,
+              height: 32,
+            ),
+            // Container(
+            //     padding: const EdgeInsets.all(8.0), child: Text('YourAppTitle'))
+          ],
+        ),
       ),
       body: Column(
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Card(
-                child: Container(
-                  color: Colors.purpleAccent,
-                  child: Text(
-                    'Mountain',
-                    style: _textStyle,
+          Container(
+            height: 160,
+            child: ListView.separated(
+              padding: EdgeInsets.all(16),
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, _) => SizedBox(
+                width: 12,
+              ),
+              itemCount: 6,
+              itemBuilder: (context, index) =>
+                  buildCard(item: appState.items[index]),
+            ),
+          ),
+          Container(
+              child: Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(16),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Container(
+                  width: 300,
+                  child: Column(children: [
+                    Text('男裝'),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                        child: Expanded(
+                      child: ListView.separated(
+                        padding: EdgeInsets.all(16),
+                        scrollDirection: Axis.vertical,
+                        separatorBuilder: (context, _) => SizedBox(
+                          height: 12,
+                        ),
+                        itemCount: 6,
+                        itemBuilder: (context, index) =>
+                            buildProduct(item: appState.productList[index]),
+                      ),
+                    ))
+                  ]),
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Container(
+                  width: 300,
+                  child: Column(
+                    children: [
+                      Text("女裝"),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        child: Expanded(
+                          child: ListView.separated(
+                            padding: EdgeInsets.all(16),
+                            scrollDirection: Axis.vertical,
+                            separatorBuilder: (context, _) => SizedBox(
+                              height: 12,
+                            ),
+                            itemCount: 6,
+                            itemBuilder: (context, index) =>
+                                buildProduct(item: appState.productList[index]),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              ),
-              Card(
-                child: Container(
-                  color: Colors.greenAccent,
-                  child: Text('Beach', style: _textStyle),
+                SizedBox(
+                  width: 12,
                 ),
-              ),
-              Card(
-                child: Container(
-                  color: Colors.blue,
-                  child: Text('Lake', style: _textStyle),
+                Container(
+                  width: 300,
+                  child: Column(
+                    children: [
+                      Text("配件"),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                          child: Expanded(
+                        child: ListView.separated(
+                          padding: EdgeInsets.all(16),
+                          scrollDirection: Axis.vertical,
+                          separatorBuilder: (context, _) => SizedBox(
+                            height: 12,
+                          ),
+                          itemCount: 6,
+                          itemBuilder: (context, index) =>
+                              buildProduct(item: appState.productList[index]),
+                        ),
+                      ))
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Card(
-            child: Container(
-              height: 150.0,
-              child: Image.network(
-                  'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
+              ],
             ),
-          ),
-          Card(
-            child: Container(
-              height: 150.0,
-              child: Image.network(
-                  'https://mixkit.imgix.net/art/preview/mixkit-starry-night-sky-over-hills-and-water-85-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
-            ),
-          ),
-          Card(
-            child: Container(
-                height: 150.0,
-                child: Image.network(
-                    'https://mixkit.imgix.net/art/preview/mixkit-people-sunbathing-on-the-beach-73-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2')),
-          ),
+          )),
         ],
       ),
     );
   }
-
-  TextStyle get _textStyle => TextStyle(color: Colors.white, fontSize: 20.0);
 }
+
+class CardItem {
+  final String urlImg;
+  const CardItem({required this.urlImg});
+}
+
+Widget buildCard({
+  required CardItem item,
+}) =>
+    Container(
+        width: 200,
+        child: Expanded(
+            child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(
+              item.urlImg,
+              fit: BoxFit.cover,
+            ),
+          ),
+        )));
+
+class ProductItem {
+  final String urlImg;
+  final String title;
+  final String subtitle;
+
+  const ProductItem({
+    required this.urlImg,
+    required this.title,
+    required this.subtitle,
+  });
+}
+
+Widget buildProduct({
+  required ProductItem item,
+}) =>
+    Container(
+        height: 150,
+        child: Expanded(
+            child: AspectRatio(
+                aspectRatio: 4 / 3,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Row(children: [
+
+                    AspectRatio(
+                      aspectRatio: 2/3,
+                      child:Image.network(
+                          item.urlImg,
+                          fit: BoxFit.cover,
+                        )),
+
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Column(
+                      mainAxisAlignment:MainAxisAlignment.center,
+                      children: [Text(item.title), 
+                      const SizedBox(
+                      height: 8,
+                    ),
+                      Text(item.subtitle)],
+                    )
+                  ]),
+                ))));
