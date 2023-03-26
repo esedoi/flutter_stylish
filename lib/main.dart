@@ -247,7 +247,7 @@ Widget buildProduct({
   required ProductItem item,
 }) =>
     Container(
-        height: 150,
+        height: 100,
         child: Expanded(
             child: AspectRatio(
                 aspectRatio: 4 / 3,
@@ -267,8 +267,9 @@ Widget buildProduct({
                     ),
                     Column(
                       mainAxisAlignment:MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [Text(item.title), 
-                      const SizedBox(
+                      SizedBox(
                       height: 8,
                     ),
                       Text(item.subtitle)],
