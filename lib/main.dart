@@ -353,7 +353,6 @@ class VerticalView extends StatelessWidget {
                       itemCount: appState.productList.length,
                       itemBuilder: (context, index) {
                         return buildProduct(item: appState.productList[index]);
-                        return SizedBox.shrink();
                       },
                     ),
                   ]),
@@ -373,7 +372,6 @@ class VerticalView extends StatelessWidget {
                       itemCount: appState.productList.length,
                       itemBuilder: (context, index) {
                         return buildProduct(item: appState.productList[index]);
-                        return SizedBox.shrink();
                       },
                     ),
                   ]),
@@ -393,7 +391,6 @@ class VerticalView extends StatelessWidget {
                             ),
                       itemBuilder: (context, index) {
                         return buildProduct(item: appState.productList[index]);
-                        return SizedBox.shrink();
                       },
                     ),
                   ]),
