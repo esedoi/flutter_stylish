@@ -64,17 +64,17 @@ class MyAppState extends ChangeNotifier {
         urlImg:
             'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$999"),
+        subtitle: "NT\$980"),
     ProductItem(
         urlImg:
             'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$999"),
+        subtitle: "NT\$970"),
     ProductItem(
         urlImg:
             'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$999"),
+        subtitle: "NT\$991"),
     ProductItem(
         urlImg:
             'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
@@ -125,48 +125,48 @@ class ProductItem {
 Widget buildProduct({
   required ProductItem item,
 }) =>
-Container(
-  height: 100,
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(10.0),
-    border: Border.all(
-      color: Colors.black,
-      width: 1.5,
-    ),
-  ),
-  child: Expanded(
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(10.0),
-      child: Row(
-        children: [
-          AspectRatio(
-            aspectRatio: 2 / 3,
-            child: Image.network(
-              item.urlImg,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(item.title),
-                SizedBox(
-                  height: 8,
-                ),
-                Text(item.subtitle),
-              ],
-            ),
-          ),
-        ],
+    Container(
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: Colors.black,
+          width: 1.5,
+        ),
       ),
-    ),
-  ),
-);
+      child: Expanded(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: Row(
+            children: [
+              AspectRatio(
+                aspectRatio: 2 / 3,
+                child: Image.network(
+                  item.urlImg,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item.title),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(item.subtitle),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
 
 class HorizontalView extends StatelessWidget {
   @override
@@ -341,48 +341,61 @@ class VerticalView extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 children: [
                   ExpansionTile(title: Text('男裝'), children: <Widget>[
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                    SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      separatorBuilder: (context, _) => SizedBox(
+                              height: 12,
+                            ),
+                      itemCount: appState.productList.length,
+                      itemBuilder: (context, index) {
+                        return buildProduct(item: appState.productList[index]);
+                        return SizedBox.shrink();
+                      },
+                    ),
                   ]),
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   ExpansionTile(title: Text('女裝'), children: <Widget>[
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                    SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      separatorBuilder: (context, _) => SizedBox(
+                              height: 12,
+                            ),
+                      itemCount: appState.productList.length,
+                      itemBuilder: (context, index) {
+                        return buildProduct(item: appState.productList[index]);
+                        return SizedBox.shrink();
+                      },
+                    ),
                   ]),
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   ExpansionTile(title: Text('配件'), children: <Widget>[
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                    SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
-                     SizedBox(height: 12,),
-                    buildProduct(item: appState.productList[0]),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: appState.productList.length,
+                      separatorBuilder: (context, _) => SizedBox(
+                              height: 12,
+                            ),
+                      itemBuilder: (context, index) {
+                        return buildProduct(item: appState.productList[index]);
+                        return SizedBox.shrink();
+                      },
+                    ),
                   ]),
                 ],
               ),
