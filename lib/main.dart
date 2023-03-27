@@ -1,5 +1,6 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -19,7 +20,13 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
         ),
-        home: Ch7RowColumn(),
+        home: LayoutBuilder(builder: (context, Constraints) {
+          if (Constraints.maxWidth >= 601) {
+            return HorizontalView();
+          } else {
+            return VerticalView();
+          }
+        }),
       ),
     );
   }
@@ -81,134 +88,6 @@ class MyAppState extends ChangeNotifier {
   ];
 }
 
-class Ch7RowColumn extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    return Scaffold(
-      appBar: AppBar(
-        // title: Image.asset('images/stylish_logo.png',fit: BoxFit.cover),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'images/stylish_logo.png',
-              fit: BoxFit.contain,
-              height: 32,
-            ),
-            // Container(
-            //     padding: const EdgeInsets.all(8.0), child: Text('YourAppTitle'))
-          ],
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            height: 160,
-            child: ListView.separated(
-              padding: EdgeInsets.all(16),
-              scrollDirection: Axis.horizontal,
-              separatorBuilder: (context, _) => SizedBox(
-                width: 12,
-              ),
-              itemCount: 6,
-              itemBuilder: (context, index) =>
-                  buildCard(item: appState.items[index]),
-            ),
-          ),
-          Container(
-              child: Expanded(
-            child: ListView(
-              padding: EdgeInsets.all(16),
-              scrollDirection: Axis.horizontal,
-              children: [
-                Container(
-                  width: 300,
-                  child: Column(children: [
-                    Text('男裝'),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                        child: Expanded(
-                      child: ListView.separated(
-                        padding: EdgeInsets.all(16),
-                        scrollDirection: Axis.vertical,
-                        separatorBuilder: (context, _) => SizedBox(
-                          height: 12,
-                        ),
-                        itemCount: 6,
-                        itemBuilder: (context, index) =>
-                            buildProduct(item: appState.productList[index]),
-                      ),
-                    ))
-                  ]),
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Container(
-                  width: 300,
-                  child: Column(
-                    children: [
-                      Text("女裝"),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        child: Expanded(
-                          child: ListView.separated(
-                            padding: EdgeInsets.all(16),
-                            scrollDirection: Axis.vertical,
-                            separatorBuilder: (context, _) => SizedBox(
-                              height: 12,
-                            ),
-                            itemCount: 6,
-                            itemBuilder: (context, index) =>
-                                buildProduct(item: appState.productList[index]),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Container(
-                  width: 300,
-                  child: Column(
-                    children: [
-                      Text("配件"),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                          child: Expanded(
-                        child: ListView.separated(
-                          padding: EdgeInsets.all(16),
-                          scrollDirection: Axis.vertical,
-                          separatorBuilder: (context, _) => SizedBox(
-                            height: 12,
-                          ),
-                          itemCount: 6,
-                          itemBuilder: (context, index) =>
-                              buildProduct(item: appState.productList[index]),
-                        ),
-                      ))
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )),
-        ],
-      ),
-    );
-  }
-}
-
 class CardItem {
   final String urlImg;
   const CardItem({required this.urlImg});
@@ -246,33 +125,271 @@ class ProductItem {
 Widget buildProduct({
   required ProductItem item,
 }) =>
-    Container(
-        height: 100,
-        child: Expanded(
-            child: AspectRatio(
-                aspectRatio: 4 / 3,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Row(children: [
+Container(
+  height: 100,
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10.0),
+    border: Border.all(
+      color: Colors.black,
+      width: 1.5,
+    ),
+  ),
+  child: Expanded(
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Row(
+        children: [
+          AspectRatio(
+            aspectRatio: 2 / 3,
+            child: Image.network(
+              item.urlImg,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(item.title),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(item.subtitle),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+);
 
-                    AspectRatio(
-                      aspectRatio: 2/3,
-                      child:Image.network(
-                          item.urlImg,
-                          fit: BoxFit.cover,
-                        )),
+class HorizontalView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
 
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Column(
-                      mainAxisAlignment:MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [Text(item.title), 
+    return Scaffold(
+      appBar: AppBar(
+        // title: Image.asset('images/stylish_logo.png',fit: BoxFit.cover),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/stylish_logo.png',
+              fit: BoxFit.contain,
+              height: 32,
+            ),
+            // Container(
+            //     padding: const EdgeInsets.all(8.0), child: Text('YourAppTitle'))
+          ],
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 160,
+            child: ListView.separated(
+              padding: EdgeInsets.all(16),
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, _) => SizedBox(
+                width: 12,
+              ),
+              itemCount: 6,
+              itemBuilder: (context, index) =>
+                  buildCard(item: appState.items[index]),
+            ),
+          ),
+          Container(
+              child: Expanded(
+            child: Row(
+              children: [
+                Container(
+                  child: Expanded(
+                      child: Column(
+                    children: [
+                      Text('男裝'),
                       SizedBox(
-                      height: 8,
+                        height: 16,
+                      ),
+                      Container(
+                        child: Expanded(
+                          child: ListView.separated(
+                            padding: EdgeInsets.all(16),
+                            scrollDirection: Axis.vertical,
+                            separatorBuilder: (context, _) => SizedBox(
+                              height: 12,
+                            ),
+                            itemCount: 6,
+                            itemBuilder: (context, index) =>
+                                buildProduct(item: appState.productList[index]),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Container(
+                    child: Expanded(
+                  child: Column(
+                    children: [
+                      Text("女裝"),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        child: Expanded(
+                          child: ListView.separated(
+                            padding: EdgeInsets.all(16),
+                            scrollDirection: Axis.vertical,
+                            separatorBuilder: (context, _) => SizedBox(
+                              height: 12,
+                            ),
+                            itemCount: 6,
+                            itemBuilder: (context, index) =>
+                                buildProduct(item: appState.productList[index]),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+                SizedBox(
+                  width: 12,
+                ),
+                Container(
+                  child: Expanded(
+                    child: Column(
+                      children: [
+                        Text("配件"),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Container(
+                            child: Expanded(
+                          child: ListView.separated(
+                            padding: EdgeInsets.all(16),
+                            scrollDirection: Axis.vertical,
+                            separatorBuilder: (context, _) => SizedBox(
+                              height: 12,
+                            ),
+                            itemCount: 6,
+                            itemBuilder: (context, index) =>
+                                buildProduct(item: appState.productList[index]),
+                          ),
+                        ))
+                      ],
                     ),
-                      Text(item.subtitle)],
-                    )
+                  ),
+                ),
+              ],
+            ),
+          )),
+        ],
+      ),
+    );
+  }
+}
+
+class VerticalView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
+    return Scaffold(
+      appBar: AppBar(
+        // title: Image.asset('images/stylish_logo.png',fit: BoxFit.cover),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/stylish_logo.png',
+              fit: BoxFit.contain,
+              height: 32,
+            ),
+            // Container(
+            //     padding: const EdgeInsets.all(8.0), child: Text('YourAppTitle'))
+          ],
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 160,
+            child: ListView.separated(
+              padding: EdgeInsets.all(16),
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, _) => SizedBox(
+                width: 12,
+              ),
+              itemCount: 6,
+              itemBuilder: (context, index) =>
+                  buildCard(item: appState.items[index]),
+            ),
+          ),
+          Container(
+            child: Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(20.0),
+                scrollDirection: Axis.vertical,
+                children: [
+                  ExpansionTile(title: Text('男裝'), children: <Widget>[
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                    SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
                   ]),
-                ))));
+                  SizedBox(height: 12,),
+                  ExpansionTile(title: Text('女裝'), children: <Widget>[
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                    SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                  ]),
+                  SizedBox(height: 12,),
+                  ExpansionTile(title: Text('配件'), children: <Widget>[
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                    SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                     SizedBox(height: 12,),
+                    buildProduct(item: appState.productList[0]),
+                  ]),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
