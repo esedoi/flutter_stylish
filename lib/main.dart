@@ -204,94 +204,83 @@ class HorizontalView extends StatelessWidget {
                   buildCard(item: appState.items[index]),
             ),
           ),
-          Container(
-              child: Expanded(
+          Expanded(
             child: Row(
+          children: [
+            Expanded(
+                child: Column(
               children: [
-                Container(
-                  child: Expanded(
-                      child: Column(
-                    children: [
-                      Text('男裝'),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        child: Expanded(
-                          child: ListView.separated(
-                            padding: EdgeInsets.all(16),
-                            scrollDirection: Axis.vertical,
-                            separatorBuilder: (context, _) => SizedBox(
-                              height: 12,
-                            ),
-                            itemCount: 6,
-                            itemBuilder: (context, index) =>
-                                buildProduct(item: appState.productList[index]),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-                ),
+                Text('男裝'),
                 SizedBox(
-                  width: 12,
+                  height: 16,
                 ),
-                Container(
-                    child: Expanded(
-                  child: Column(
-                    children: [
-                      Text("女裝"),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        child: Expanded(
-                          child: ListView.separated(
-                            padding: EdgeInsets.all(16),
-                            scrollDirection: Axis.vertical,
-                            separatorBuilder: (context, _) => SizedBox(
-                              height: 12,
-                            ),
-                            itemCount: 6,
-                            itemBuilder: (context, index) =>
-                                buildProduct(item: appState.productList[index]),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )),
-                SizedBox(
-                  width: 12,
-                ),
-                Container(
-                  child: Expanded(
-                    child: Column(
-                      children: [
-                        Text("配件"),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Container(
-                            child: Expanded(
-                          child: ListView.separated(
-                            padding: EdgeInsets.all(16),
-                            scrollDirection: Axis.vertical,
-                            separatorBuilder: (context, _) => SizedBox(
-                              height: 12,
-                            ),
-                            itemCount: 6,
-                            itemBuilder: (context, index) =>
-                                buildProduct(item: appState.productList[index]),
-                          ),
-                        ))
-                      ],
+                Expanded(
+                  child: ListView.separated(
+                    padding: EdgeInsets.all(16),
+                    scrollDirection: Axis.vertical,
+                    separatorBuilder: (context, _) => SizedBox(
+                      height: 12,
                     ),
+                    itemCount: 6,
+                    itemBuilder: (context, index) =>
+                        buildProduct(item: appState.productList[index]),
                   ),
                 ),
               ],
+            )),
+            SizedBox(
+              width: 12,
             ),
-          )),
+            Expanded(
+              child: Column(
+            children: [
+              Text("女裝"),
+              SizedBox(
+                height: 16,
+              ),
+              Expanded(
+                child: ListView.separated(
+                  padding: EdgeInsets.all(16),
+                  scrollDirection: Axis.vertical,
+                  separatorBuilder: (context, _) => SizedBox(
+                    height: 12,
+                  ),
+                  itemCount: 6,
+                  itemBuilder: (context, index) =>
+                      buildProduct(item: appState.productList[index]),
+                ),
+              )
+            ],
+              ),
+            ),
+            SizedBox(
+              width: 12,
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  Text("配件"),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                  padding: EdgeInsets.all(16),
+                  scrollDirection: Axis.vertical,
+                  separatorBuilder: (context, _) => SizedBox(
+                    height: 12,
+                  ),
+                  itemCount: 6,
+                  itemBuilder: (context, index) =>
+                      buildProduct(item: appState.productList[index]),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+            ),
+          ),
         ],
       ),
     );
@@ -334,68 +323,66 @@ class VerticalView extends StatelessWidget {
                   buildCard(item: appState.items[index]),
             ),
           ),
-          Container(
-            child: Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(20.0),
-                scrollDirection: Axis.vertical,
-                children: [
-                  ExpansionTile(title: Text('男裝'), children: <Widget>[
-                    SizedBox(
-                      height: 12,
-                    ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, _) => SizedBox(
-                              height: 12,
-                            ),
-                      itemCount: appState.productList.length,
-                      itemBuilder: (context, index) {
-                        return buildProduct(item: appState.productList[index]);
-                      },
-                    ),
-                  ]),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(20.0),
+              scrollDirection: Axis.vertical,
+              children: [
+                ExpansionTile(title: Text('男裝'), children: <Widget>[
                   SizedBox(
                     height: 12,
                   ),
-                  ExpansionTile(title: Text('女裝'), children: <Widget>[
-                    SizedBox(
-                      height: 12,
-                    ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, _) => SizedBox(
-                              height: 12,
-                            ),
-                      itemCount: appState.productList.length,
-                      itemBuilder: (context, index) {
-                        return buildProduct(item: appState.productList[index]);
-                      },
-                    ),
-                  ]),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, _) => SizedBox(
+                            height: 12,
+                          ),
+                    itemCount: appState.productList.length,
+                    itemBuilder: (context, index) {
+                      return buildProduct(item: appState.productList[index]);
+                    },
+                  ),
+                ]),
+                SizedBox(
+                  height: 12,
+                ),
+                ExpansionTile(title: Text('女裝'), children: <Widget>[
                   SizedBox(
                     height: 12,
                   ),
-                  ExpansionTile(title: Text('配件'), children: <Widget>[
-                    SizedBox(
-                      height: 12,
-                    ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: appState.productList.length,
-                      separatorBuilder: (context, _) => SizedBox(
-                              height: 12,
-                            ),
-                      itemBuilder: (context, index) {
-                        return buildProduct(item: appState.productList[index]);
-                      },
-                    ),
-                  ]),
-                ],
-              ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, _) => SizedBox(
+                            height: 12,
+                          ),
+                    itemCount: appState.productList.length,
+                    itemBuilder: (context, index) {
+                      return buildProduct(item: appState.productList[index]);
+                    },
+                  ),
+                ]),
+                SizedBox(
+                  height: 12,
+                ),
+                ExpansionTile(title: Text('配件'), children: <Widget>[
+                  SizedBox(
+                    height: 12,
+                  ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: appState.productList.length,
+                    separatorBuilder: (context, _) => SizedBox(
+                            height: 12,
+                          ),
+                    itemBuilder: (context, index) {
+                      return buildProduct(item: appState.productList[index]);
+                    },
+                  ),
+                ]),
+              ],
             ),
           ),
         ],
