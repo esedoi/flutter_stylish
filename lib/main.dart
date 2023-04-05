@@ -35,57 +35,75 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   List<CardItem> items = [
-    CardItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
-    CardItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
-    CardItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
-    CardItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
-    CardItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
-    CardItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2'),
+    CardItem(urlImg: 'https://picsum.photos/1600/900'),
+    CardItem(urlImg: 'https://picsum.photos/1600/900'),
+    CardItem(urlImg: 'https://picsum.photos/1600/900'),
+    CardItem(urlImg: 'https://picsum.photos/1600/900'),
+    CardItem(urlImg: 'https://picsum.photos/1600/900'),
+    CardItem(urlImg: 'https://picsum.photos/1600/900'),
   ];
 
   List<ProductItem> productList = [
     ProductItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$999"),
+        subtitle: "NT\$999",
+        moreImgs: [
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900'
+        ],
+        descriptions: "UNIQLO 特級輕羽絨外套"),
     ProductItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$980"),
+        subtitle: "NT\$980",
+        moreImgs: [
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900'
+        ],
+        descriptions: "UNIQLO 特級輕羽絨外套"),
     ProductItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$970"),
+        subtitle: "NT\$970",
+        moreImgs: [
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900'
+        ],
+        descriptions: "UNIQLO 特級輕羽絨外套"),
     ProductItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$991"),
+        subtitle: "NT\$991",
+        moreImgs: [
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900'
+        ],
+        descriptions: "UNIQLO 特級輕羽絨外套"),
     ProductItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$999"),
+        subtitle: "NT\$991",
+        moreImgs: [
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900'
+        ],
+        descriptions: "UNIQLO 特級輕羽絨外套"),
     ProductItem(
-        urlImg:
-            'https://mixkit.imgix.net/art/preview/mixkit-desert-landscape-under-a-bright-sun-86-original-large.png?q=80&auto=format%2Ccompress&h=700&q=50&dpr=2',
+        urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$999"),
+        subtitle: "NT\$991",
+        moreImgs: [
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900',
+          'https://picsum.photos/1600/900'
+        ],
+        descriptions: "UNIQLO 特級輕羽絨外套"),
   ];
 }
 
@@ -97,7 +115,7 @@ class CardItem {
 Widget buildCard({
   required CardItem item,
 }) =>
-    Container(
+    SizedBox(
         width: 200,
         child: Expanded(
             child: AspectRatio(
@@ -115,12 +133,15 @@ class ProductItem {
   final String urlImg;
   final String title;
   final String subtitle;
+  final List<String> moreImgs;
+  final String descriptions;
 
-  const ProductItem({
-    required this.urlImg,
-    required this.title,
-    required this.subtitle,
-  });
+  const ProductItem(
+      {required this.urlImg,
+      required this.title,
+      required this.subtitle,
+      required this.moreImgs,
+      required this.descriptions});
 }
 
 Widget buildProduct({
@@ -134,13 +155,13 @@ Widget buildProduct({
             ),
         child: InkWell(
           onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProductDetailsScreen(productItem: item),
-      ),
-    );
-  },
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDetailsScreen(productItem: item),
+              ),
+            );
+          },
           child: Container(
             height: 100,
             decoration: BoxDecoration(
@@ -241,9 +262,9 @@ class HorizontalView extends StatelessWidget {
                           height: 12,
                         ),
                         itemCount: 6,
-                        itemBuilder: (context, index) =>
-                            buildProduct(context: context, item: appState.productList[index]),
-                            
+                        itemBuilder: (context, index) => buildProduct(
+                            context: context,
+                            item: appState.productList[index]),
                       ),
                     ),
                   ],
@@ -266,8 +287,9 @@ class HorizontalView extends StatelessWidget {
                             height: 12,
                           ),
                           itemCount: 6,
-                          itemBuilder: (context, index) =>
-                              buildProduct(context: context, item: appState.productList[index]),
+                          itemBuilder: (context, index) => buildProduct(
+                              context: context,
+                              item: appState.productList[index]),
                         ),
                       )
                     ],
@@ -291,8 +313,9 @@ class HorizontalView extends StatelessWidget {
                             height: 12,
                           ),
                           itemCount: 6,
-                          itemBuilder: (context, index) =>
-                              buildProduct(context: context, item: appState.productList[index]),
+                          itemBuilder: (context, index) => buildProduct(
+                              context: context,
+                              item: appState.productList[index]),
                         ),
                       )
                     ],
@@ -357,7 +380,8 @@ class VerticalView extends StatelessWidget {
                     ),
                     itemCount: appState.productList.length,
                     itemBuilder: (context, index) {
-                      return buildProduct(context: context, item: appState.productList[index]);
+                      return buildProduct(
+                          context: context, item: appState.productList[index]);
                     },
                   ),
                 ]),
@@ -376,7 +400,8 @@ class VerticalView extends StatelessWidget {
                     ),
                     itemCount: appState.productList.length,
                     itemBuilder: (context, index) {
-                      return buildProduct(context: context, item: appState.productList[index]);
+                      return buildProduct(
+                          context: context, item: appState.productList[index]);
                     },
                   ),
                 ]),
@@ -395,7 +420,8 @@ class VerticalView extends StatelessWidget {
                       height: 12,
                     ),
                     itemBuilder: (context, index) {
-                      return buildProduct(context: context,item: appState.productList[index]);
+                      return buildProduct(
+                          context: context, item: appState.productList[index]);
                     },
                   ),
                 ]),
