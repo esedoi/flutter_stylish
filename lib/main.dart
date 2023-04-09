@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_stylish/view/detail_page.dart';
 import 'package:provider/provider.dart';
 
+import 'data/data.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -34,89 +36,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  List<CardItem> items = [
-    CardItem(urlImg: 'https://picsum.photos/1600/900'),
-    CardItem(urlImg: 'https://picsum.photos/1600/900'),
-    CardItem(urlImg: 'https://picsum.photos/1600/900'),
-    CardItem(urlImg: 'https://picsum.photos/1600/900'),
-    CardItem(urlImg: 'https://picsum.photos/1600/900'),
-    CardItem(urlImg: 'https://picsum.photos/1600/900'),
-  ];
-
-  List<ProductItem> productList = [
-    ProductItem(
-        urlImg: 'https://picsum.photos/1600/900',
-        title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$999",
-        productNumber: "20230203101",
-        moreImgs: [
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900'
-        ],
-        descriptions: "UNIQLO 特級輕羽絨外套",
-        detail:'o.n.s is all about options, which is why we take about all'),
-    ProductItem(
-        urlImg: 'https://picsum.photos/1600/900',
-        title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$980",
-        productNumber: "20230203101",
-        moreImgs: [
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900'
-        ],
-        descriptions: "UNIQLO 特級輕羽絨外套",
-        detail:'o.n.s is all about options, which is why we take about all'),
-    ProductItem(
-        urlImg: 'https://picsum.photos/1600/900',
-        title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$970",
-        productNumber: "20230203101",
-        moreImgs: [
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900'
-        ],
-        descriptions: "UNIQLO 特級輕羽絨外套",
-        detail:'o.n.s is all about options, which is why we take about all'),
-    ProductItem(
-        urlImg: 'https://picsum.photos/1600/900',
-        title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$991",
-        productNumber: "20230203101",
-        moreImgs: [
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900'
-        ],
-        descriptions: "UNIQLO 特級輕羽絨外套",
-        detail:'o.n.s is all about options, which is why we take about all'),
-    ProductItem(
-        urlImg: 'https://picsum.photos/1600/900',
-        title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$991",
-        productNumber: '20230203101',
-        moreImgs: [
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900'
-        ],
-        descriptions: "UNIQLO 特級輕羽絨外套",
-        detail:'o.n.s is all about options, which is why we take about all'),
-    ProductItem(
-        urlImg: 'https://picsum.photos/1600/900',
-        title: "UNIQLO 特級輕羽絨外套",
-        subtitle: "NT\$991",
-        productNumber: '20230203101',
-        moreImgs: [
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900',
-          'https://picsum.photos/1600/900'
-        ],
-        descriptions: "UNIQLO 特級輕羽絨外套",
-        detail:'o.n.s is all about options, which is why we take about all'),
-  ];
+ 
 }
 
 class CardItem {
@@ -149,6 +69,7 @@ class ProductItem {
   final List<String> moreImgs;
   final String descriptions;
   final String detail;
+  final  List<ColorOption> colorOption;
 
   const ProductItem(
       {required this.urlImg,
@@ -157,8 +78,31 @@ class ProductItem {
       required this.productNumber,
       required this.moreImgs,
       required this.descriptions,
-      required this.detail});
+      required this.detail,
+      required this.colorOption});
 }
+
+class ColorOption{
+  Color color;
+  List<SizeOption> sizeOptions;
+
+  ColorOption({
+    required this.color,
+    required this.sizeOptions,
+  });
+  
+}
+
+class SizeOption {
+  String size;
+  int stock;
+
+  SizeOption({
+    required this.size,
+    required this.stock,
+  });
+}
+
 
 Widget buildProduct({
   required BuildContext context,
@@ -257,7 +201,7 @@ class HorizontalView extends StatelessWidget {
               ),
               itemCount: 6,
               itemBuilder: (context, index) =>
-                  buildCard(item: appState.items[index]),
+                  buildCard(item: items[index]),
             ),
           ),
           Expanded(
@@ -280,7 +224,7 @@ class HorizontalView extends StatelessWidget {
                         itemCount: 6,
                         itemBuilder: (context, index) => buildProduct(
                             context: context,
-                            item: appState.productList[index]),
+                            item: productList[index]),
                       ),
                     ),
                   ],
@@ -305,7 +249,7 @@ class HorizontalView extends StatelessWidget {
                           itemCount: 6,
                           itemBuilder: (context, index) => buildProduct(
                               context: context,
-                              item: appState.productList[index]),
+                              item: productList[index]),
                         ),
                       )
                     ],
@@ -331,7 +275,7 @@ class HorizontalView extends StatelessWidget {
                           itemCount: 6,
                           itemBuilder: (context, index) => buildProduct(
                               context: context,
-                              item: appState.productList[index]),
+                              item: productList[index]),
                         ),
                       )
                     ],
@@ -376,7 +320,7 @@ class VerticalView extends StatelessWidget {
               ),
               itemCount: 6,
               itemBuilder: (context, index) =>
-                  buildCard(item: appState.items[index]),
+                  buildCard(item: items[index]),
             ),
           ),
           Expanded(
@@ -394,10 +338,10 @@ class VerticalView extends StatelessWidget {
                     separatorBuilder: (context, _) => SizedBox(
                       height: 12,
                     ),
-                    itemCount: appState.productList.length,
+                    itemCount: productList.length,
                     itemBuilder: (context, index) {
                       return buildProduct(
-                          context: context, item: appState.productList[index]);
+                          context: context, item: productList[index]);
                     },
                   ),
                 ]),
@@ -414,10 +358,10 @@ class VerticalView extends StatelessWidget {
                     separatorBuilder: (context, _) => SizedBox(
                       height: 12,
                     ),
-                    itemCount: appState.productList.length,
+                    itemCount: productList.length,
                     itemBuilder: (context, index) {
                       return buildProduct(
-                          context: context, item: appState.productList[index]);
+                          context: context, item: productList[index]);
                     },
                   ),
                 ]),
@@ -431,13 +375,13 @@ class VerticalView extends StatelessWidget {
                   ListView.separated(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: appState.productList.length,
+                    itemCount: productList.length,
                     separatorBuilder: (context, _) => SizedBox(
                       height: 12,
                     ),
                     itemBuilder: (context, index) {
                       return buildProduct(
-                          context: context, item: appState.productList[index]);
+                          context: context, item: productList[index]);
                     },
                   ),
                 ]),

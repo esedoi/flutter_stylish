@@ -15,6 +15,19 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
   int selectedColorIndex = 1;
+  int selectedSizeIndex = 1;
+
+   List<SizeOption> get availableSizes {
+    return widget.productItem.colorOption[selectedColorIndex].sizeOptions
+        .where((sizeOption) => sizeOption.stock > 0)
+        .toList();
+  }
+
+  int get maxQuantity {
+    return availableSizes.isNotEmpty
+        ? availableSizes[selectedSizeIndex].stock
+        : 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +115,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _buildProductInfo(BuildContext context) {
+
+
+
     return Container(
       width: 350,
       child: Column(
@@ -147,68 +163,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 Wrap(
                   spacing: 8,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedColorIndex = 0;
-                        });
-                      },
-                      child: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          border: Border.all(
-                            color: selectedColorIndex == 0
-                                ? Colors.red
-                                : Colors.transparent,
-                            width: 2,
+                  children: List<Widget>.generate(
+                    widget.productItem.colorOption.length,
+                    (index) {
+                      Color color = widget.productItem.colorOption[index].color;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedColorIndex = index;
+                              selectedSizeIndex = 0;
+                              quantity = 1;
+                          });
+                        },
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: color,
+                            border: Border.all(
+                              color: selectedColorIndex == index
+                                  ? Colors.red
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedColorIndex = 1;
-                        });
-                      },
-                      child: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          border: Border.all(
-                            color: selectedColorIndex == 1
-                                ? Colors.red
-                                : Colors.transparent,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedColorIndex = 2;
-                        });
-                      },
-                      child: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          border: Border.all(
-                            color: selectedColorIndex == 2
-                                ? Colors.red
-                                : Colors.transparent,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -229,23 +211,41 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   endIndent: 16,
                 ),
                 SizedBox(width: 8),
-                ChoiceChip(
-                  label: Text('S'),
-                  selected: true,
-                  onSelected: (_) {},
-                ),
-                SizedBox(width: 8),
-                ChoiceChip(
-                  label: Text('M'),
-                  selected: false,
-                  onSelected: (_) {},
-                ),
-                SizedBox(width: 8),
-                ChoiceChip(
-                  label: Text('L'),
-                  selected: false,
-                  onSelected: (_) {},
-                ),
+//                 Wrap(
+// spacing: 8,
+// children: widget.productItem.colorOption[selectedColorIndex].sizeOptions.map((sizeOption) {
+// return ChoiceChip(
+// label: Text(sizeOption.size),
+// selected: selectedSizeIndex == widget.productItem.colorOption[selectedColorIndex].sizeOptions.indexOf(sizeOption),
+// onSelected: (isSelected) {
+// setState(() {
+// selectedSizeIndex = widget.productItem.colorOption[selectedColorIndex].sizeOptions.indexOf(sizeOption);
+// });
+// },
+// );
+// }).toList(),
+// ),
+Wrap(
+                    spacing: 8,
+                    children: availableSizes
+                        .map(
+                          (sizeOption) => ChoiceChip(
+                            label: Text(sizeOption.size),
+                            selected:
+                                selectedSizeIndex == availableSizes.indexOf(sizeOption),
+                            onSelected: (isSelected) {
+                              setState(() {
+                                selectedSizeIndex =
+                                    availableSizes.indexOf(sizeOption);
+                                quantity = 1;
+                              });
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
+              
+
               ],
             ),
           ),
@@ -266,51 +266,101 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 SizedBox(width: 8),
                 InkWell(
-                  onTap: () {
-                    if (quantity > 1) {
-                      setState(() {
-                        quantity--;
-                      });
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.remove,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                Text(
-                  '$quantity',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      quantity++;
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+  onTap: () {
+    if (quantity > 1) {
+      setState(() {
+        quantity--;
+      });
+    }
+  },
+  child: Container(
+    decoration: BoxDecoration(
+      color: Colors.black,
+      shape: BoxShape.circle,
+    ),
+    child: Icon(
+      Icons.remove,
+      color: Colors.white,
+    ),
+  ),
+),
+SizedBox(
+  width: 16,
+),
+Text(
+  '$quantity',
+  style: Theme.of(context).textTheme.headline6,
+),
+SizedBox(
+  width: 16,
+),
+InkWell(
+  onTap: () {
+    ColorOption colorOption = widget.productItem.colorOption[selectedColorIndex];
+    SizeOption sizeOption = colorOption.sizeOptions[selectedSizeIndex];
+    if (quantity < sizeOption.stock) {
+      setState(() {
+        quantity++;
+      });
+    }
+  },
+  child: Container(
+    decoration: BoxDecoration(
+      color: Colors.black,
+      shape: BoxShape.circle,
+    ),
+    child: Icon(
+      Icons.add,
+      color: Colors.white,
+    ),
+  ),
+),
+                // InkWell(
+                //   onTap: () {
+                //     if (quantity > 1) {
+                //       setState(() {
+                //         quantity--;
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: Colors.black,
+                //       shape: BoxShape.circle,
+                //     ),
+                //     child: Icon(
+                //       Icons.remove,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   width: 16,
+                // ),
+                // Text(
+                //   '$quantity',
+                //   style: Theme.of(context).textTheme.titleMedium,
+                // ),
+                // SizedBox(
+                //   width: 16,
+                // ),
+                // InkWell(
+                //   onTap: () {
+                //     setState(() {
+                //       quantity++;
+                //     });
+                //   },
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: Colors.black,
+                //       shape: BoxShape.circle,
+                //     ),
+                //     child: Icon(
+                //       Icons.add,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
