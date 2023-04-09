@@ -48,62 +48,74 @@ class MyAppState extends ChangeNotifier {
         urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
         subtitle: "NT\$999",
+        productNumber: "20230203101",
         moreImgs: [
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900'
         ],
-        descriptions: "UNIQLO 特級輕羽絨外套"),
+        descriptions: "UNIQLO 特級輕羽絨外套",
+        detail:'o.n.s is all about options, which is why we take about all'),
     ProductItem(
         urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
         subtitle: "NT\$980",
+        productNumber: "20230203101",
         moreImgs: [
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900'
         ],
-        descriptions: "UNIQLO 特級輕羽絨外套"),
+        descriptions: "UNIQLO 特級輕羽絨外套",
+        detail:'o.n.s is all about options, which is why we take about all'),
     ProductItem(
         urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
         subtitle: "NT\$970",
+        productNumber: "20230203101",
         moreImgs: [
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900'
         ],
-        descriptions: "UNIQLO 特級輕羽絨外套"),
+        descriptions: "UNIQLO 特級輕羽絨外套",
+        detail:'o.n.s is all about options, which is why we take about all'),
     ProductItem(
         urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
         subtitle: "NT\$991",
+        productNumber: "20230203101",
         moreImgs: [
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900'
         ],
-        descriptions: "UNIQLO 特級輕羽絨外套"),
+        descriptions: "UNIQLO 特級輕羽絨外套",
+        detail:'o.n.s is all about options, which is why we take about all'),
     ProductItem(
         urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
         subtitle: "NT\$991",
+        productNumber: '20230203101',
         moreImgs: [
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900'
         ],
-        descriptions: "UNIQLO 特級輕羽絨外套"),
+        descriptions: "UNIQLO 特級輕羽絨外套",
+        detail:'o.n.s is all about options, which is why we take about all'),
     ProductItem(
         urlImg: 'https://picsum.photos/1600/900',
         title: "UNIQLO 特級輕羽絨外套",
         subtitle: "NT\$991",
+        productNumber: '20230203101',
         moreImgs: [
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900',
           'https://picsum.photos/1600/900'
         ],
-        descriptions: "UNIQLO 特級輕羽絨外套"),
+        descriptions: "UNIQLO 特級輕羽絨外套",
+        detail:'o.n.s is all about options, which is why we take about all'),
   ];
 }
 
@@ -133,15 +145,19 @@ class ProductItem {
   final String urlImg;
   final String title;
   final String subtitle;
+  final String productNumber;
   final List<String> moreImgs;
   final String descriptions;
+  final String detail;
 
   const ProductItem(
       {required this.urlImg,
       required this.title,
       required this.subtitle,
+      required this.productNumber,
       required this.moreImgs,
-      required this.descriptions});
+      required this.descriptions,
+      required this.detail});
 }
 
 Widget buildProduct({

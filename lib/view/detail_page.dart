@@ -14,6 +14,7 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
+  int selectedColorIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final bool isLargeScreen = constraints.maxWidth >= 600;
+          final bool isLargeScreen = constraints.maxWidth >= 650;
 
           if (isLargeScreen) {
             return horizontalDetail(context);
@@ -38,11 +39,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   verticalDetail(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network(
-            widget.productItem.urlImg,
-            fit: BoxFit.cover,
+          SizedBox(
+            height: 400,
+            child: AspectRatio(
+              aspectRatio: 3 / 4,
+              child: Image.network(
+                widget.productItem.urlImg,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -62,32 +69,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   horizontalDetail(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // 第一個部分：圖片和商品描述
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: Image.network(
-                  widget.productItem.urlImg,
-                  fit: BoxFit.cover,
+              SizedBox(
+                height: 400,
+                child: AspectRatio(
+                  aspectRatio: 3 / 4,
+                  child: Image.network(
+                    widget.productItem.urlImg,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildProductInfo(context),
-                    ],
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildProductInfo(context),
+                  ],
                 ),
               ),
             ],
           ),
-
-          // 第二個部分：更多圖片
           _buildMoreImages(context),
         ],
       ),
@@ -95,131 +102,239 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _buildProductInfo(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.productItem.title,
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        SizedBox(height: 8),
-        Text(
-          widget.productItem.subtitle,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        SizedBox(height: 16),
-        Text(
-          widget.productItem.descriptions,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        SizedBox(height: 16),
-        Row(
-          children: [
-            Text(
-              '顏色',
-              style: Theme.of(context).textTheme.titleMedium,
+    return Container(
+      width: 350,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.productItem.title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24.0,
+              color: Colors.black,
             ),
-            Wrap(
-              spacing: 8,
+          ),
+          SizedBox(height: 8),
+          Text(
+            widget.productItem.productNumber,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SizedBox(height: 8),
+          Text(
+            widget.productItem.subtitle,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SizedBox(height: 8),
+          Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
+          SizedBox(height: 16),
+          Container(
+            height: 50,
+            child: Row(
               children: [
+                Text(
+                  '顏色',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                VerticalDivider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedColorIndex = 0;
+                        });
+                      },
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          border: Border.all(
+                            color: selectedColorIndex == 0
+                                ? Colors.red
+                                : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedColorIndex = 1;
+                        });
+                      },
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          border: Border.all(
+                            color: selectedColorIndex == 1
+                                ? Colors.red
+                                : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedColorIndex = 2;
+                        });
+                      },
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          border: Border.all(
+                            color: selectedColorIndex == 2
+                                ? Colors.red
+                                : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16),
+          Container(
+            height: 50,
+            child: Row(
+              children: [
+                Text(
+                  '尺寸',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                VerticalDivider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                SizedBox(width: 8),
                 ChoiceChip(
-                  label: Text('紅色'),
+                  label: Text('S'),
                   selected: true,
                   onSelected: (_) {},
                 ),
+                SizedBox(width: 8),
                 ChoiceChip(
-                  label: Text('藍色'),
+                  label: Text('M'),
                   selected: false,
                   onSelected: (_) {},
                 ),
+                SizedBox(width: 8),
                 ChoiceChip(
-                  label: Text('綠色'),
+                  label: Text('L'),
                   selected: false,
                   onSelected: (_) {},
                 ),
               ],
             ),
-          ],
-        ),
-        SizedBox(height: 16),
-        Row(
-          children: [
-            Text(
-              '尺寸',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            SizedBox(width: 8),
-            ChoiceChip(
-              label: Text('S'),
-              selected: true,
-              onSelected: (_) {},
-            ),
-            SizedBox(width: 8),
-            ChoiceChip(
-              label: Text('M'),
-              selected: false,
-              onSelected: (_) {},
-            ),
-            SizedBox(width: 8),
-            ChoiceChip(
-              label: Text('L'),
-              selected: false,
-              onSelected: (_) {},
-            ),
-          ],
-        ),
-        SizedBox(height: 16),
-        Row(
-          children: [
-            InkWell(
-              onTap: () {
-                if (quantity > 1) {
-                  setState(() {
-                    quantity--;
-                  });
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  shape: BoxShape.circle,
+          ),
+          SizedBox(height: 16),
+          Container(
+            height: 50,
+            child: Row(
+              children: [
+                Text(
+                  '數量',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                child: Icon(
-                  Icons.remove,
-                  color: Colors.white,
+                VerticalDivider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
                 ),
+                SizedBox(width: 8),
+                InkWell(
+                  onTap: () {
+                    if (quantity > 1) {
+                      setState(() {
+                        quantity--;
+                      });
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.remove,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                Text(
+                  '$quantity',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      quantity++;
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          MaterialButton(
+            minWidth: 300.0,
+            height: 50.0,
+            color: Colors.grey[800],
+            onPressed: () {},
+            child: Text(
+              '請選擇購物車',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-            SizedBox(
-              width: 16,
-            ),
-            Text(
-              '$quantity',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            SizedBox(
-              width: 16,
-            ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  quantity++;
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+          ),
+          Text(
+            widget.productItem.descriptions,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          SizedBox(height: 16),
+        ],
+      ),
     );
   }
 
