@@ -1,12 +1,19 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 import '../main.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class ProductDetailsScreen extends StatefulWidget {
   final ProductItem productItem;
 
   ProductDetailsScreen({Key? key, required this.productItem}) : super(key: key);
 
+  @override
+  _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
+}
+
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,15 +24,14 @@ class ProductDetailsScreen extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints constraints) {
           final bool isLargeScreen = constraints.maxWidth >= 650;
 
-print( '123');
-          print( productItem);
-
           if (isLargeScreen) {
             return AppStateWidget(
-                child: horizontalDetail(context), productItem: productItem);
+                productItem: widget.productItem,
+                child: horizontalDetail(context));
           } else {
             return AppStateWidget(
-                child: verticalDetail(context), productItem: productItem);
+                productItem: widget.productItem,
+                child: verticalDetail(context));
           }
         },
       ),
@@ -33,6 +39,7 @@ print( '123');
   }
 
   verticalDetail(BuildContext context) {
+    print('39');
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +49,7 @@ print( '123');
             child: AspectRatio(
               aspectRatio: 3 / 4,
               child: Image.network(
-                productItem.urlImg,
+                widget.productItem.urlImg,
                 fit: BoxFit.cover,
               ),
             ),
@@ -75,7 +82,7 @@ print( '123');
                 child: AspectRatio(
                   aspectRatio: 3 / 4,
                   child: Image.network(
-                    productItem.urlImg,
+                    widget.productItem.urlImg,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -98,13 +105,15 @@ print( '123');
   }
 
   Widget _buildProductInfo(BuildContext context) {
+    print('104');
+
     return Container(
       width: 350,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            productItem.title,
+            widget.productItem.title,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24.0,
@@ -113,12 +122,12 @@ print( '123');
           ),
           SizedBox(height: 8),
           Text(
-            productItem.productNumber,
+            widget.productItem.productNumber,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 8),
           Text(
-            productItem.subtitle,
+            widget.productItem.subtitle,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 8),
@@ -141,171 +150,14 @@ print( '123');
                   indent: 16,
                   endIndent: 16,
                 ),
-                Wrap(
-                  spacing: 8,
-                  children: List<Widget>.generate(
-                    productItem.colorOption.length,
-                    (index) {
-                      Color color = productItem.colorOption[index].color;
-                      return GestureDetector(
-                        onTap: () {
-                          AppStateWidget.of(context)
-                              .setSelectedColorIndex(index);
-                          AppStateWidget.of(context).setSelectedSizeIndex(0);
-                          AppStateWidget.of(context).setQuantity(1);
-                          // setState(() {
-                          //   selectedColorIndex = index;
-                          //   selectedSizeIndex = 0;
-                          //   quantity = 1;
-                          // });
-                        },
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            color: color,
-                            border: Border.all(
-                              color: AppStateScope.of(context)
-                                          .selectedColorIndex ==
-                                      index
-                                  ? Colors.red
-                                  : Colors.transparent,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                ColorSelector(),
               ],
             ),
           ),
           SizedBox(height: 16),
-          Container(
-            height: 50,
-            child: Row(
-              children: [
-                Text(
-                  '尺寸',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                VerticalDivider(
-                  color: Colors.grey,
-                  thickness: 1,
-                  indent: 16,
-                  endIndent: 16,
-                ),
-                SizedBox(width: 8),
-                Wrap(
-                  spacing: 8,
-                  children: AppStateScope.of(context)
-                      .availableSizes
-                      .map(
-                        (sizeOption) => ChoiceChip(
-                          label: Text(sizeOption.size),
-                          selected:
-                              AppStateScope.of(context).selectedSizeIndex ==
-                                  AppStateScope.of(context)
-                                      .availableSizes
-                                      .indexOf(sizeOption),
-                          onSelected: (isSelected) {
-                            AppStateWidget.of(context).setSelectedSizeIndex(
-                                AppStateScope.of(context)
-                                    .availableSizes
-                                    .indexOf(sizeOption));
-                            AppStateWidget.of(context).setQuantity(1);
-
-                            // setState(() {
-                            //   selectedSizeIndex =
-                            //       availableSizes.indexOf(sizeOption);
-                            //   quantity = 1;
-                            // });
-                          },
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-            ),
-          ),
+          SizeSelector(),
           SizedBox(height: 16),
-          Container(
-            height: 50,
-            child: Row(
-              children: [
-                Text(
-                  '數量',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                VerticalDivider(
-                  color: Colors.grey,
-                  thickness: 1,
-                  indent: 16,
-                  endIndent: 16,
-                ),
-                SizedBox(width: 8),
-                InkWell(
-                  onTap: () {
-                    if (AppStateScope.of(context).quantity > 1) {
-                      AppStateWidget.of(context)
-                          .setQuantity(AppStateScope.of(context).quantity--);
-
-                      // setState(() {
-                      //   quantity--;
-                      // });
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.remove,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                Text(
-                  '${AppStateScope.of(context).quantity}',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                InkWell(
-                  onTap: () {
-                    ColorOption colorOption = productItem.colorOption[
-                        AppStateScope.of(context).selectedColorIndex];
-                    SizeOption sizeOption = colorOption.sizeOptions[
-                        AppStateScope.of(context).selectedSizeIndex];
-                    if (AppStateScope.of(context).quantity < sizeOption.stock) {
-                      AppStateWidget.of(context)
-                          .setQuantity(AppStateScope.of(context).quantity++);
-
-                      // setState(() {
-                      //   quantity++;
-                      // });
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          QuataSelector(),
           MaterialButton(
             minWidth: 300.0,
             height: 50.0,
@@ -321,7 +173,7 @@ print( '123');
             ),
           ),
           Text(
-            productItem.descriptions,
+            widget.productItem.descriptions,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           SizedBox(height: 16),
@@ -347,14 +199,14 @@ print( '123');
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: productItem.moreImgs.length,
+              itemCount: widget.productItem.moreImgs.length,
               itemBuilder: (context, index) {
                 return AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Container(
                     margin: EdgeInsets.only(right: 16),
                     child: Image.network(
-                      productItem.moreImgs[index],
+                      widget.productItem.moreImgs[index],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -368,20 +220,196 @@ print( '123');
   }
 }
 
+class ColorSelector extends StatelessWidget {
+  const ColorSelector({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('230');
+
+    final ProductItem productItem = AppStateScope.of(context).productItem;
+    return Wrap(
+      spacing: 8,
+      children: List<Widget>.generate(
+        productItem.colorOption.length,
+        (index) {
+          Color color = productItem.colorOption[index].color;
+          return GestureDetector(
+            onTap: () {
+              print('241');
+              AppStateWidget.of(context).setSelectedColorIndex(index);
+              AppStateWidget.of(context).setSelectedSizeIndex(0);
+              AppStateWidget.of(context).setQuantity(1);
+            },
+            child: Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: color,
+                border: Border.all(
+                  color: AppStateScope.of(context).selectedColorIndex == index
+                      ? Colors.red
+                      : Colors.transparent,
+                  width: 2,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class SizeSelector extends StatelessWidget {
+  const SizeSelector({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('271');
+    final ProductItem productItem = AppStateScope.of(context).productItem;
+    return Container(
+      height: 50,
+      child: Row(
+        children: [
+          Text(
+            '尺寸',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          VerticalDivider(
+            color: Colors.grey,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          SizedBox(width: 8),
+          Wrap(
+            spacing: 8,
+            children: AppStateScope.of(context)
+                .availableSizes
+                .map(
+                  (sizeOption) => ChoiceChip(
+                    label: Text(sizeOption.size),
+                    selected: AppStateScope.of(context).selectedSizeIndex ==
+                        AppStateScope.of(context)
+                            .availableSizes
+                            .indexOf(sizeOption),
+                    onSelected: (isSelected) {
+                      print('301');
+                      AppStateWidget.of(context).setSelectedSizeIndex(
+                          AppStateScope.of(context)
+                              .availableSizes
+                              .indexOf(sizeOption));
+                      AppStateWidget.of(context).setQuantity(1);
+                    },
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class QuataSelector extends StatelessWidget {
+  const QuataSelector({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('329');
+    final ProductItem productItem = AppStateScope.of(context).productItem;
+    return Container(
+      height: 50,
+      child: Row(
+        children: [
+          Text(
+            '數量',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          VerticalDivider(
+            color: Colors.grey,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          SizedBox(width: 8),
+          InkWell(
+            onTap: () {
+              print('349');
+              if (AppStateScope.of(context).quantity > 1) {
+                AppStateWidget.of(context)
+                    .setQuantity(AppStateScope.of(context).quantity--);
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.remove,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          Text(
+            '${AppStateScope.of(context).quantity}',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          InkWell(
+            onTap: () {
+              print('368 ${AppStateScope.of(context).quantity}');
+              
+              ColorOption colorOption = productItem
+                  .colorOption[AppStateScope.of(context).selectedColorIndex];
+              SizeOption sizeOption = colorOption
+                  .sizeOptions[AppStateScope.of(context).selectedSizeIndex];
+                  print('374, ${sizeOption.stock}');
+
+              if (AppStateScope.of(context).quantity < sizeOption.stock) {
+                AppStateWidget.of(context)
+                    .setQuantity(AppStateScope.of(context).quantity+1);
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class AppState {
-  AppState({
-    this.quantity = 1,
-    this.selectedColorIndex = 1,
-    this.selectedSizeIndex = 1,
-    this.availableSizes = const <SizeOption>[],
-    this.maxQuantity = 0,
-  });
+  AppState(
+      {this.quantity = 1,
+      this.selectedColorIndex = 1,
+      this.selectedSizeIndex = 1,
+      this.availableSizes = const <SizeOption>[],
+      this.maxQuantity = 0,
+      required this.productItem});
 
   int quantity = 1;
   int selectedColorIndex = 1;
   int selectedSizeIndex = 1;
   List<SizeOption> availableSizes;
   int maxQuantity;
+  ProductItem productItem;
 
   AppState copyWith({
     int? quantity,
@@ -391,12 +419,12 @@ class AppState {
     int? maxQuantity,
   }) {
     return AppState(
-      quantity: quantity ?? this.quantity,
-      selectedColorIndex: selectedColorIndex ?? this.selectedColorIndex,
-      selectedSizeIndex: selectedSizeIndex ?? this.selectedSizeIndex,
-      availableSizes: availableSizes ?? this.availableSizes,
-      maxQuantity: maxQuantity ?? this.maxQuantity,
-    );
+        quantity: quantity ?? this.quantity,
+        selectedColorIndex: selectedColorIndex ?? this.selectedColorIndex,
+        selectedSizeIndex: selectedSizeIndex ?? this.selectedSizeIndex,
+        availableSizes: availableSizes ?? this.availableSizes,
+        maxQuantity: maxQuantity ?? this.maxQuantity,
+        productItem: productItem);
   }
 }
 
@@ -417,12 +445,11 @@ class AppStateScope extends InheritedWidget {
 }
 
 class AppStateWidget extends StatefulWidget {
-  const AppStateWidget(
-      {required this.child, required this.productItem, Key? key})
-      : super(key: key);
-
-  final ProductItem productItem;
   final Widget child;
+  final ProductItem productItem;
+
+  AppStateWidget({required this.productItem, required this.child, Key? key})
+      : super(key: key);
 
   static AppStateWidgetState of(BuildContext context) {
     return context.findAncestorStateOfType<AppStateWidgetState>()!;
@@ -434,8 +461,8 @@ class AppStateWidget extends StatefulWidget {
 
 class AppStateWidgetState extends State<AppStateWidget> {
   int quantity = 1;
-  int selectedColorIndex = 1;
-  int selectedSizeIndex = 1;
+  int selectedColorIndex = 0;
+  int selectedSizeIndex = 0;
 
   List<SizeOption> get availableSizes {
     return widget.productItem.colorOption[selectedColorIndex].sizeOptions
@@ -449,11 +476,7 @@ class AppStateWidgetState extends State<AppStateWidget> {
         : 0;
   }
 
-  AppState _data = AppState(
-    quantity: 0,
-    selectedColorIndex: 0,
-    selectedSizeIndex: 0,
-  );
+  late AppState _data;
 
   void setSelectedColorIndex(int newColorIndex) {
     if (newColorIndex != _data.selectedColorIndex) {
@@ -476,6 +499,7 @@ class AppStateWidgetState extends State<AppStateWidget> {
   }
 
   void setQuantity(int newQuantity) {
+    print('502, ${newQuantity}');
     if (newQuantity != _data.quantity) {
       setState(() {
         _data = _data.copyWith(quantity: newQuantity);
@@ -483,15 +507,39 @@ class AppStateWidgetState extends State<AppStateWidget> {
     }
   }
 
+  void setAvailableSizes(List<SizeOption> newSizeOption) {
+    if (newSizeOption != _data.availableSizes) {
+      setState(() {
+        _data = _data.copyWith(availableSizes: newSizeOption);
+      });
+    }
+  }
+
+  void setMaxQuantity(int newMaxQuantity) {
+    if (newMaxQuantity != _data.maxQuantity) {
+      setState(() {
+        _data = _data.copyWith(quantity: newMaxQuantity);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    _data = AppState(
+        quantity: quantity,
+        selectedColorIndex: selectedColorIndex,
+        selectedSizeIndex: selectedSizeIndex,
+        availableSizes: availableSizes,
+        maxQuantity: maxQuantity,
+        productItem: widget.productItem);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.productItem);
-    AppState _data = AppState(
-        quantity: 0,
-        selectedColorIndex: 0,
-        selectedSizeIndex: 0,
-        availableSizes: availableSizes,
-        maxQuantity: maxQuantity);
+    print("5566");
+
+    
 
     return AppStateScope(
       _data,
