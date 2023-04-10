@@ -39,7 +39,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   verticalDetail(BuildContext context) {
-    print('39');
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,8 +104,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _buildProductInfo(BuildContext context) {
-    print('104');
-
     return Container(
       width: 350,
       child: Column(
@@ -136,24 +133,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             thickness: 1,
           ),
           SizedBox(height: 16),
-          Container(
-            height: 50,
-            child: Row(
-              children: [
-                Text(
-                  '顏色',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                VerticalDivider(
-                  color: Colors.grey,
-                  thickness: 1,
-                  indent: 16,
-                  endIndent: 16,
-                ),
-                ColorSelector(),
-              ],
-            ),
-          ),
+          ColorSelector(),
           SizedBox(height: 16),
           SizeSelector(),
           SizedBox(height: 16),
@@ -225,37 +205,52 @@ class ColorSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('230');
-
     final ProductItem productItem = AppStateScope.of(context).productItem;
-    return Wrap(
-      spacing: 8,
-      children: List<Widget>.generate(
-        productItem.colorOption.length,
-        (index) {
-          Color color = productItem.colorOption[index].color;
-          return GestureDetector(
-            onTap: () {
-              print('241');
-              AppStateWidget.of(context).setSelectedColorIndex(index);
-              AppStateWidget.of(context).setSelectedSizeIndex(0);
-              AppStateWidget.of(context).setQuantity(1);
-            },
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                color: color,
-                border: Border.all(
-                  color: AppStateScope.of(context).selectedColorIndex == index
-                      ? Colors.red
-                      : Colors.transparent,
-                  width: 2,
-                ),
-              ),
+    return Container(
+      height: 50,
+      child: Row(
+        children: [
+          Text(
+            '顏色',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          VerticalDivider(
+            color: Colors.grey,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          Wrap(
+            spacing: 8,
+            children: List<Widget>.generate(
+              productItem.colorOption.length,
+              (index) {
+                Color color = productItem.colorOption[index].color;
+                return GestureDetector(
+                  onTap: () {
+                    AppStateWidget.of(context).setSelectedColorIndex(index);
+                    AppStateWidget.of(context).setSelectedSizeIndex(0);
+                    AppStateWidget.of(context).setQuantity(1);
+                  },
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: color,
+                      border: Border.all(
+                        color: AppStateScope.of(context).selectedColorIndex ==
+                                index
+                            ? Colors.red
+                            : Colors.transparent,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -266,7 +261,6 @@ class SizeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('271');
     final ProductItem productItem = AppStateScope.of(context).productItem;
     return Container(
       height: 50,
@@ -295,7 +289,6 @@ class SizeSelector extends StatelessWidget {
                             .availableSizes
                             .indexOf(sizeOption),
                     onSelected: (isSelected) {
-                      print('301');
                       AppStateWidget.of(context).setSelectedSizeIndex(
                           AppStateScope.of(context)
                               .availableSizes
@@ -317,7 +310,6 @@ class QuataSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('329');
     final ProductItem productItem = AppStateScope.of(context).productItem;
     return Container(
       height: 50,
@@ -336,7 +328,6 @@ class QuataSelector extends StatelessWidget {
           SizedBox(width: 8),
           InkWell(
             onTap: () {
-              print('349');
               if (AppStateScope.of(context).quantity > 1) {
                 AppStateWidget.of(context)
                     .setQuantity(AppStateScope.of(context).quantity--);
@@ -365,17 +356,14 @@ class QuataSelector extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              print('368 ${AppStateScope.of(context).quantity}');
-              
               ColorOption colorOption = productItem
                   .colorOption[AppStateScope.of(context).selectedColorIndex];
               SizeOption sizeOption = colorOption
                   .sizeOptions[AppStateScope.of(context).selectedSizeIndex];
-                  print('374, ${sizeOption.stock}');
 
               if (AppStateScope.of(context).quantity < sizeOption.stock) {
                 AppStateWidget.of(context)
-                    .setQuantity(AppStateScope.of(context).quantity+1);
+                    .setQuantity(AppStateScope.of(context).quantity + 1);
               }
             },
             child: Container(
@@ -476,7 +464,7 @@ class AppStateWidgetState extends State<AppStateWidget> {
         : 0;
   }
 
-  late AppState _data;
+   late AppState _data ;
 
   void setSelectedColorIndex(int newColorIndex) {
     if (newColorIndex != _data.selectedColorIndex) {
@@ -499,7 +487,6 @@ class AppStateWidgetState extends State<AppStateWidget> {
   }
 
   void setQuantity(int newQuantity) {
-    print('502, ${newQuantity}');
     if (newQuantity != _data.quantity) {
       setState(() {
         _data = _data.copyWith(quantity: newQuantity);
@@ -507,21 +494,6 @@ class AppStateWidgetState extends State<AppStateWidget> {
     }
   }
 
-  void setAvailableSizes(List<SizeOption> newSizeOption) {
-    if (newSizeOption != _data.availableSizes) {
-      setState(() {
-        _data = _data.copyWith(availableSizes: newSizeOption);
-      });
-    }
-  }
-
-  void setMaxQuantity(int newMaxQuantity) {
-    if (newMaxQuantity != _data.maxQuantity) {
-      setState(() {
-        _data = _data.copyWith(quantity: newMaxQuantity);
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -537,10 +509,6 @@ class AppStateWidgetState extends State<AppStateWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("5566");
-
-    
-
     return AppStateScope(
       _data,
       child: widget.child,
