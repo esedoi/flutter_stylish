@@ -2,32 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../main.dart';
 
-class ProductDetailsScreen extends StatefulWidget {
+class ProductDetailsScreen extends StatelessWidget {
   final ProductItem productItem;
 
-  const ProductDetailsScreen({Key? key, required this.productItem})
-      : super(key: key);
-
-  @override
-  _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
-}
-
-class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  int quantity = 1;
-  int selectedColorIndex = 1;
-  int selectedSizeIndex = 1;
-
-   List<SizeOption> get availableSizes {
-    return widget.productItem.colorOption[selectedColorIndex].sizeOptions
-        .where((sizeOption) => sizeOption.stock > 0)
-        .toList();
-  }
-
-  int get maxQuantity {
-    return availableSizes.isNotEmpty
-        ? availableSizes[selectedSizeIndex].stock
-        : 0;
-  }
+  ProductDetailsScreen({Key? key, required this.productItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +17,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         builder: (BuildContext context, BoxConstraints constraints) {
           final bool isLargeScreen = constraints.maxWidth >= 650;
 
+print( '123');
+          print( productItem);
+
           if (isLargeScreen) {
-            return horizontalDetail(context);
+            return AppStateWidget(
+                child: horizontalDetail(context), productItem: productItem);
           } else {
-            return verticalDetail(context);
+            return AppStateWidget(
+                child: verticalDetail(context), productItem: productItem);
           }
         },
       ),
@@ -59,7 +42,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: AspectRatio(
               aspectRatio: 3 / 4,
               child: Image.network(
-                widget.productItem.urlImg,
+                productItem.urlImg,
                 fit: BoxFit.cover,
               ),
             ),
@@ -92,7 +75,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: AspectRatio(
                   aspectRatio: 3 / 4,
                   child: Image.network(
-                    widget.productItem.urlImg,
+                    productItem.urlImg,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -115,16 +98,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _buildProductInfo(BuildContext context) {
-
-
-
     return Container(
       width: 350,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.productItem.title,
+            productItem.title,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24.0,
@@ -133,12 +113,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
           SizedBox(height: 8),
           Text(
-            widget.productItem.productNumber,
+            productItem.productNumber,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 8),
           Text(
-            widget.productItem.subtitle,
+            productItem.subtitle,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 8),
@@ -164,16 +144,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 Wrap(
                   spacing: 8,
                   children: List<Widget>.generate(
-                    widget.productItem.colorOption.length,
+                    productItem.colorOption.length,
                     (index) {
-                      Color color = widget.productItem.colorOption[index].color;
+                      Color color = productItem.colorOption[index].color;
                       return GestureDetector(
                         onTap: () {
-                          setState(() {
-                            selectedColorIndex = index;
-                              selectedSizeIndex = 0;
-                              quantity = 1;
-                          });
+                          AppStateWidget.of(context)
+                              .setSelectedColorIndex(index);
+                          AppStateWidget.of(context).setSelectedSizeIndex(0);
+                          AppStateWidget.of(context).setQuantity(1);
+                          // setState(() {
+                          //   selectedColorIndex = index;
+                          //   selectedSizeIndex = 0;
+                          //   quantity = 1;
+                          // });
                         },
                         child: Container(
                           width: 20,
@@ -181,7 +165,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           decoration: BoxDecoration(
                             color: color,
                             border: Border.all(
-                              color: selectedColorIndex == index
+                              color: AppStateScope.of(context)
+                                          .selectedColorIndex ==
+                                      index
                                   ? Colors.red
                                   : Colors.transparent,
                               width: 2,
@@ -211,41 +197,35 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   endIndent: 16,
                 ),
                 SizedBox(width: 8),
-//                 Wrap(
-// spacing: 8,
-// children: widget.productItem.colorOption[selectedColorIndex].sizeOptions.map((sizeOption) {
-// return ChoiceChip(
-// label: Text(sizeOption.size),
-// selected: selectedSizeIndex == widget.productItem.colorOption[selectedColorIndex].sizeOptions.indexOf(sizeOption),
-// onSelected: (isSelected) {
-// setState(() {
-// selectedSizeIndex = widget.productItem.colorOption[selectedColorIndex].sizeOptions.indexOf(sizeOption);
-// });
-// },
-// );
-// }).toList(),
-// ),
-Wrap(
-                    spacing: 8,
-                    children: availableSizes
-                        .map(
-                          (sizeOption) => ChoiceChip(
-                            label: Text(sizeOption.size),
-                            selected:
-                                selectedSizeIndex == availableSizes.indexOf(sizeOption),
-                            onSelected: (isSelected) {
-                              setState(() {
-                                selectedSizeIndex =
-                                    availableSizes.indexOf(sizeOption);
-                                quantity = 1;
-                              });
-                            },
-                          ),
-                        )
-                        .toList(),
-                  ),
-              
+                Wrap(
+                  spacing: 8,
+                  children: AppStateScope.of(context)
+                      .availableSizes
+                      .map(
+                        (sizeOption) => ChoiceChip(
+                          label: Text(sizeOption.size),
+                          selected:
+                              AppStateScope.of(context).selectedSizeIndex ==
+                                  AppStateScope.of(context)
+                                      .availableSizes
+                                      .indexOf(sizeOption),
+                          onSelected: (isSelected) {
+                            AppStateWidget.of(context).setSelectedSizeIndex(
+                                AppStateScope.of(context)
+                                    .availableSizes
+                                    .indexOf(sizeOption));
+                            AppStateWidget.of(context).setQuantity(1);
 
+                            // setState(() {
+                            //   selectedSizeIndex =
+                            //       availableSizes.indexOf(sizeOption);
+                            //   quantity = 1;
+                            // });
+                          },
+                        ),
+                      )
+                      .toList(),
+                ),
               ],
             ),
           ),
@@ -266,101 +246,63 @@ Wrap(
                 ),
                 SizedBox(width: 8),
                 InkWell(
-  onTap: () {
-    if (quantity > 1) {
-      setState(() {
-        quantity--;
-      });
-    }
-  },
-  child: Container(
-    decoration: BoxDecoration(
-      color: Colors.black,
-      shape: BoxShape.circle,
-    ),
-    child: Icon(
-      Icons.remove,
-      color: Colors.white,
-    ),
-  ),
-),
-SizedBox(
-  width: 16,
-),
-Text(
-  '$quantity',
-  style: Theme.of(context).textTheme.headline6,
-),
-SizedBox(
-  width: 16,
-),
-InkWell(
-  onTap: () {
-    ColorOption colorOption = widget.productItem.colorOption[selectedColorIndex];
-    SizeOption sizeOption = colorOption.sizeOptions[selectedSizeIndex];
-    if (quantity < sizeOption.stock) {
-      setState(() {
-        quantity++;
-      });
-    }
-  },
-  child: Container(
-    decoration: BoxDecoration(
-      color: Colors.black,
-      shape: BoxShape.circle,
-    ),
-    child: Icon(
-      Icons.add,
-      color: Colors.white,
-    ),
-  ),
-),
-                // InkWell(
-                //   onTap: () {
-                //     if (quantity > 1) {
-                //       setState(() {
-                //         quantity--;
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       color: Colors.black,
-                //       shape: BoxShape.circle,
-                //     ),
-                //     child: Icon(
-                //       Icons.remove,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(
-                //   width: 16,
-                // ),
-                // Text(
-                //   '$quantity',
-                //   style: Theme.of(context).textTheme.titleMedium,
-                // ),
-                // SizedBox(
-                //   width: 16,
-                // ),
-                // InkWell(
-                //   onTap: () {
-                //     setState(() {
-                //       quantity++;
-                //     });
-                //   },
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       color: Colors.black,
-                //       shape: BoxShape.circle,
-                //     ),
-                //     child: Icon(
-                //       Icons.add,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
+                  onTap: () {
+                    if (AppStateScope.of(context).quantity > 1) {
+                      AppStateWidget.of(context)
+                          .setQuantity(AppStateScope.of(context).quantity--);
+
+                      // setState(() {
+                      //   quantity--;
+                      // });
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.remove,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                Text(
+                  '${AppStateScope.of(context).quantity}',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                InkWell(
+                  onTap: () {
+                    ColorOption colorOption = productItem.colorOption[
+                        AppStateScope.of(context).selectedColorIndex];
+                    SizeOption sizeOption = colorOption.sizeOptions[
+                        AppStateScope.of(context).selectedSizeIndex];
+                    if (AppStateScope.of(context).quantity < sizeOption.stock) {
+                      AppStateWidget.of(context)
+                          .setQuantity(AppStateScope.of(context).quantity++);
+
+                      // setState(() {
+                      //   quantity++;
+                      // });
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -379,7 +321,7 @@ InkWell(
             ),
           ),
           Text(
-            widget.productItem.descriptions,
+            productItem.descriptions,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           SizedBox(height: 16),
@@ -405,14 +347,14 @@ InkWell(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: widget.productItem.moreImgs.length,
+              itemCount: productItem.moreImgs.length,
               itemBuilder: (context, index) {
                 return AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Container(
                     margin: EdgeInsets.only(right: 16),
                     child: Image.network(
-                      widget.productItem.moreImgs[index],
+                      productItem.moreImgs[index],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -422,6 +364,138 @@ InkWell(
           ),
         ],
       ),
+    );
+  }
+}
+
+class AppState {
+  AppState({
+    this.quantity = 1,
+    this.selectedColorIndex = 1,
+    this.selectedSizeIndex = 1,
+    this.availableSizes = const <SizeOption>[],
+    this.maxQuantity = 0,
+  });
+
+  int quantity = 1;
+  int selectedColorIndex = 1;
+  int selectedSizeIndex = 1;
+  List<SizeOption> availableSizes;
+  int maxQuantity;
+
+  AppState copyWith({
+    int? quantity,
+    int? selectedColorIndex,
+    int? selectedSizeIndex,
+    List<SizeOption>? availableSizes,
+    int? maxQuantity,
+  }) {
+    return AppState(
+      quantity: quantity ?? this.quantity,
+      selectedColorIndex: selectedColorIndex ?? this.selectedColorIndex,
+      selectedSizeIndex: selectedSizeIndex ?? this.selectedSizeIndex,
+      availableSizes: availableSizes ?? this.availableSizes,
+      maxQuantity: maxQuantity ?? this.maxQuantity,
+    );
+  }
+}
+
+class AppStateScope extends InheritedWidget {
+  const AppStateScope(this.data, {Key? key, required Widget child})
+      : super(key: key, child: child);
+
+  final AppState data;
+
+  static AppState of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<AppStateScope>()!.data;
+  }
+
+  @override
+  bool updateShouldNotify(AppStateScope oldWidget) {
+    return data != oldWidget.data;
+  }
+}
+
+class AppStateWidget extends StatefulWidget {
+  const AppStateWidget(
+      {required this.child, required this.productItem, Key? key})
+      : super(key: key);
+
+  final ProductItem productItem;
+  final Widget child;
+
+  static AppStateWidgetState of(BuildContext context) {
+    return context.findAncestorStateOfType<AppStateWidgetState>()!;
+  }
+
+  @override
+  AppStateWidgetState createState() => AppStateWidgetState();
+}
+
+class AppStateWidgetState extends State<AppStateWidget> {
+  int quantity = 1;
+  int selectedColorIndex = 1;
+  int selectedSizeIndex = 1;
+
+  List<SizeOption> get availableSizes {
+    return widget.productItem.colorOption[selectedColorIndex].sizeOptions
+        .where((sizeOption) => sizeOption.stock > 0)
+        .toList();
+  }
+
+  int get maxQuantity {
+    return availableSizes.isNotEmpty
+        ? availableSizes[selectedSizeIndex].stock
+        : 0;
+  }
+
+  AppState _data = AppState(
+    quantity: 0,
+    selectedColorIndex: 0,
+    selectedSizeIndex: 0,
+  );
+
+  void setSelectedColorIndex(int newColorIndex) {
+    if (newColorIndex != _data.selectedColorIndex) {
+      setState(() {
+        _data = _data.copyWith(
+          selectedColorIndex: newColorIndex,
+        );
+      });
+    }
+  }
+
+  void setSelectedSizeIndex(int newSizeIndex) {
+    if (newSizeIndex != _data.selectedSizeIndex) {
+      setState(() {
+        _data = _data.copyWith(
+          selectedSizeIndex: newSizeIndex,
+        );
+      });
+    }
+  }
+
+  void setQuantity(int newQuantity) {
+    if (newQuantity != _data.quantity) {
+      setState(() {
+        _data = _data.copyWith(quantity: newQuantity);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print(widget.productItem);
+    AppState _data = AppState(
+        quantity: 0,
+        selectedColorIndex: 0,
+        selectedSizeIndex: 0,
+        availableSizes: availableSizes,
+        maxQuantity: maxQuantity);
+
+    return AppStateScope(
+      _data,
+      child: widget.child,
     );
   }
 }
