@@ -1,7 +1,7 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_stylish/view/detail_page.dart';
+import 'package:flutter_stylish/product_detail/view/detail_page.dart';
 import 'package:provider/provider.dart';
 
 import 'data/data.dart';
