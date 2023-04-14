@@ -1,10 +1,9 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_stylish/product_detail/view/detail_page.dart';
 import 'package:provider/provider.dart';
 
 import 'data/data.dart';
+import 'data/data_class.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,9 +34,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {
- 
-}
+class MyAppState extends ChangeNotifier {}
 
 class CardItem {
   final String urlImg;
@@ -60,49 +57,6 @@ Widget buildCard({
             ),
           ),
         )));
-
-class ProductItem {
-  final String urlImg;
-  final String title;
-  final String subtitle;
-  final String productNumber;
-  final List<String> moreImgs;
-  final String descriptions;
-  final String detail;
-  final  List<ColorOption> colorOption;
-
-  const ProductItem(
-      {required this.urlImg,
-      required this.title,
-      required this.subtitle,
-      required this.productNumber,
-      required this.moreImgs,
-      required this.descriptions,
-      required this.detail,
-      required this.colorOption});
-}
-
-class ColorOption{
-  Color color;
-  List<SizeOption> sizeOptions;
-
-  ColorOption({
-    required this.color,
-    required this.sizeOptions,
-  });
-  
-}
-
-class SizeOption {
-  String size;
-  int stock;
-
-  SizeOption({
-    required this.size,
-    required this.stock,
-  });
-}
-
 
 Widget buildProduct({
   required BuildContext context,
@@ -200,8 +154,7 @@ class HorizontalView extends StatelessWidget {
                 width: 12,
               ),
               itemCount: 6,
-              itemBuilder: (context, index) =>
-                  buildCard(item: items[index]),
+              itemBuilder: (context, index) => buildCard(item: items[index]),
             ),
           ),
           Expanded(
@@ -223,8 +176,7 @@ class HorizontalView extends StatelessWidget {
                         ),
                         itemCount: 6,
                         itemBuilder: (context, index) => buildProduct(
-                            context: context,
-                            item: productList[index]),
+                            context: context, item: productList[index]),
                       ),
                     ),
                   ],
@@ -248,8 +200,7 @@ class HorizontalView extends StatelessWidget {
                           ),
                           itemCount: 6,
                           itemBuilder: (context, index) => buildProduct(
-                              context: context,
-                              item: productList[index]),
+                              context: context, item: productList[index]),
                         ),
                       )
                     ],
@@ -274,8 +225,7 @@ class HorizontalView extends StatelessWidget {
                           ),
                           itemCount: 6,
                           itemBuilder: (context, index) => buildProduct(
-                              context: context,
-                              item: productList[index]),
+                              context: context, item: productList[index]),
                         ),
                       )
                     ],
@@ -319,8 +269,7 @@ class VerticalView extends StatelessWidget {
                 width: 12,
               ),
               itemCount: 6,
-              itemBuilder: (context, index) =>
-                  buildCard(item: items[index]),
+              itemBuilder: (context, index) => buildCard(item: items[index]),
             ),
           ),
           Expanded(

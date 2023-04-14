@@ -1,23 +1,17 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_widget.dart';
 import 'package:flutter_stylish/product_detail/view/quata_selector.dart';
 import 'package:flutter_stylish/product_detail/view/size_selector.dart';
 
-import '../../main.dart';
+import '../../data/data_class.dart';
 import 'color_selector.dart';
 
-class ProductDetailsScreen extends StatefulWidget {
+class ProductDetailsScreen extends StatelessWidget {
   final ProductItem productItem;
 
   ProductDetailsScreen({Key? key, required this.productItem}) : super(key: key);
 
-  @override
-  _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
-}
-
-class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,20 +23,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           final bool isLargeScreen = constraints.maxWidth >= 650;
 
           if (isLargeScreen) {
-            return AppStateWidget(
-                productItem: widget.productItem,
-                child: horizontalDetail(context));
+            return HorizontalDetail(productItem: productItem);
           } else {
-            return AppStateWidget(
-                productItem: widget.productItem,
-                child: verticalDetail(context));
+            return VerticalDetail(productItem: productItem);
           }
         },
       ),
     );
   }
+}
 
-  verticalDetail(BuildContext context) {
+class VerticalDetail extends StatelessWidget {
+  final ProductItem productItem;
+  VerticalDetail({Key? key, required this.productItem}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,7 +48,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: AspectRatio(
               aspectRatio: 3 / 4,
               child: Image.network(
-                widget.productItem.urlImg,
+                productItem.urlImg,
                 fit: BoxFit.cover,
               ),
             ),
@@ -62,17 +58,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildProductInfo(context),
+                AppStateWidget(
+                    productItem: productItem,
+                    child: ProductInfo(productItem: productItem)),
               ],
             ),
           ),
-          _buildMoreImages(context),
+          MoreImages(productItem: productItem),
         ],
       ),
     );
   }
+}
 
-  horizontalDetail(BuildContext context) {
+class HorizontalDetail extends StatelessWidget {
+  final ProductItem productItem;
+  HorizontalDetail({Key? key, required this.productItem}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,7 +89,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: AspectRatio(
                   aspectRatio: 3 / 4,
                   child: Image.network(
-                    widget.productItem.urlImg,
+                    productItem.urlImg,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -95,26 +99,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildProductInfo(context),
+                    AppStateWidget(
+                        productItem: productItem,
+                        child: ProductInfo(productItem: productItem)),
                   ],
                 ),
               ),
             ],
           ),
-          _buildMoreImages(context),
+          MoreImages(productItem: productItem),
         ],
       ),
     );
   }
+}
 
-  Widget _buildProductInfo(BuildContext context) {
+class ProductInfo extends StatelessWidget {
+  final ProductItem productItem;
+  ProductInfo({Key? key, required this.productItem}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: 350,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.productItem.title,
+            productItem.title,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24.0,
@@ -123,12 +135,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
           SizedBox(height: 8),
           Text(
-            widget.productItem.productNumber,
+            productItem.productNumber,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 8),
           Text(
-            widget.productItem.subtitle,
+            productItem.subtitle,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 8),
@@ -157,7 +169,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
           Text(
-            widget.productItem.descriptions,
+            productItem.descriptions,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           SizedBox(height: 16),
@@ -165,8 +177,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
     );
   }
+}
 
-  Widget _buildMoreImages(BuildContext context) {
+class MoreImages extends StatelessWidget {
+  final ProductItem productItem;
+  MoreImages({Key? key, required this.productItem}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(16),
       child: Column(
@@ -183,14 +201,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: widget.productItem.moreImgs.length,
+              itemCount: productItem.moreImgs.length,
               itemBuilder: (context, index) {
                 return AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Container(
                     margin: EdgeInsets.only(right: 16),
                     child: Image.network(
-                      widget.productItem.moreImgs[index],
+                      productItem.moreImgs[index],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -203,9 +221,3 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 }
-
-
-
-
-
-

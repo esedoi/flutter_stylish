@@ -11,7 +11,6 @@ class SizeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProductItem productItem = AppStateScope.of(context).productItem;
     return Container(
       height: 50,
       child: Row(

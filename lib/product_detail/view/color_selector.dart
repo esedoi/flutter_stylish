@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_scope.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_widget.dart';
 
-import '../../main.dart';
-import 'detail_page.dart';
+import '../../data/data_class.dart';
 
 class ColorSelector extends StatelessWidget {
   const ColorSelector({Key? key}) : super(key: key);

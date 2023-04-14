@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../main.dart';
+import 'data_class.dart';
 
 List<CardItem> items = [
     CardItem(urlImg: 'https://picsum.photos/1600/900'),
