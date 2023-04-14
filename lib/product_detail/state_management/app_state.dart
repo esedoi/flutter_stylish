@@ -1,4 +1,5 @@
-import 'package:flutter_stylish/main.dart';
+
+import '../../data/data_class.dart';
 
 class AppState {
   AppState(

@@ -125,7 +125,6 @@ Widget buildProduct({
 class HorizontalView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
 
     return Scaffold(
       appBar: AppBar(
@@ -145,7 +144,7 @@ class HorizontalView extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 160,
             child: ListView.separated(
               padding: EdgeInsets.all(16),
@@ -243,7 +242,6 @@ class HorizontalView extends StatelessWidget {
 class VerticalView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
 
     return Scaffold(
       appBar: AppBar(

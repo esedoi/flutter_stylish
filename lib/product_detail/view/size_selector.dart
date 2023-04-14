@@ -1,17 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_scope.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_widget.dart';
 
-import '../../main.dart';
-import 'detail_page.dart';
 
 class SizeSelector extends StatelessWidget {
   const SizeSelector({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 50,
       child: Row(
         children: [

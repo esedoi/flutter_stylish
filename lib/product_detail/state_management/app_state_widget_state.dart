@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../main.dart';
+import '../../data/data_class.dart';
 import 'app_state.dart';
 import 'app_state_scope.dart';
 import 'app_state_widget.dart';

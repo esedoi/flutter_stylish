@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_widget_state.dart';
 
-import '../../main.dart';
+import '../../data/data_class.dart';
 
 class AppStateWidget extends StatefulWidget {
   final Widget child;

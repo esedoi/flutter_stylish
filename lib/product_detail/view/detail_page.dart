@@ -120,7 +120,7 @@ class ProductInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 350,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
