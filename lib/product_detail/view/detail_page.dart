@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_widget.dart';
 import 'package:flutter_stylish/product_detail/view/quata_selector.dart';
 import 'package:flutter_stylish/product_detail/view/size_selector.dart';
 
 import '../../data/data_class.dart';
+import '../bloc/product_detail_bloc.dart';
 import 'color_selector.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -14,7 +16,9 @@ class ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+        create: (BuildContext context) => ProductDetailBloc(productItem),
+        child: Scaffold(
       appBar: AppBar(
         title: Text('Product Details'),
       ),
@@ -29,7 +33,8 @@ class ProductDetailsScreen extends StatelessWidget {
           }
         },
       ),
-    );
+    ),
+      );
   }
 }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_scope.dart';
 import 'package:flutter_stylish/product_detail/state_management/app_state_widget.dart';
 
 import '../../data/data_class.dart';
+import '../bloc/product_detail_bloc.dart';
 
 class ColorSelector extends StatelessWidget {
   const ColorSelector({Key? key}) : super(key: key);
@@ -24,7 +26,9 @@ class ColorSelector extends StatelessWidget {
             indent: 16,
             endIndent: 16,
           ),
-          Wrap(
+          BlocBuilder<ProductDetailBloc, ProductDetailState>(
+            builder: (context, state){
+              return Wrap(
             spacing: 8,
             children: List<Widget>.generate(
               productItem.colorOption.length,
@@ -32,7 +36,8 @@ class ColorSelector extends StatelessWidget {
                 Color color = productItem.colorOption[index].color;
                 return GestureDetector(
                   onTap: () {
-                    AppStateWidget.of(context).setSelectedColorIndex(index);
+                    context.read<ProductDetailBloc>().add(SetSelectedColorIndexEvent(index));
+                    // AppStateWidget.of(context).setSelectedColorIndex(index);
                     AppStateWidget.of(context).setSelectedSizeIndex(0);
                     AppStateWidget.of(context).setQuantity(1);
                   },
@@ -42,10 +47,14 @@ class ColorSelector extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: color,
                       border: Border.all(
-                        color: AppStateScope.of(context).selectedColorIndex ==
+                        color: state.detailState.selectedColorIndex ==
                                 index
                             ? Colors.red
                             : Colors.transparent,
+                        // color: AppStateScope.of(context).selectedColorIndex ==
+                        //         index
+                        //     ? Colors.red
+                        //     : Colors.transparent,
                         width: 2,
                       ),
                     ),
@@ -53,7 +62,41 @@ class ColorSelector extends StatelessWidget {
                 );
               },
             ),
-          ),
+          );
+
+
+            } 
+          )
+          // Wrap(
+          //   spacing: 8,
+          //   children: List<Widget>.generate(
+          //     productItem.colorOption.length,
+          //     (index) {
+          //       Color color = productItem.colorOption[index].color;
+          //       return GestureDetector(
+          //         onTap: () {
+          //           AppStateWidget.of(context).setSelectedColorIndex(index);
+          //           AppStateWidget.of(context).setSelectedSizeIndex(0);
+          //           AppStateWidget.of(context).setQuantity(1);
+          //         },
+          //         child: Container(
+          //           width: 20,
+          //           height: 20,
+          //           decoration: BoxDecoration(
+          //             color: color,
+          //             border: Border.all(
+          //               color: AppStateScope.of(context).selectedColorIndex ==
+          //                       index
+          //                   ? Colors.red
+          //                   : Colors.transparent,
+          //               width: 2,
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
