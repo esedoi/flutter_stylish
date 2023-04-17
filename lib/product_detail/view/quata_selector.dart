@@ -1,83 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/product_detail/state_management/app_state_scope.dart';
-import 'package:flutter_stylish/product_detail/state_management/app_state_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/data_class.dart';
+import '../bloc/product_detail_bloc.dart';
 
 class QuataSelector extends StatelessWidget {
-  const QuataSelector({Key? key}) : super(key: key);
+  final ProductItem productItem;
+  const QuataSelector({Key? key, required this.productItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ProductItem productItem = AppStateScope.of(context).productItem;
+    // final ProductItem productItem = AppStateScope.of(context).productItem;
     return SizedBox(
       height: 50,
-      child: Row(
-        children: [
-          Text(
-            '數量',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          VerticalDivider(
-            color: Colors.grey,
-            thickness: 1,
-            indent: 16,
-            endIndent: 16,
-          ),
-          SizedBox(width: 8),
-          InkWell(
-            onTap: () {
-              if (AppStateScope.of(context).quantity > 1) {
-                AppStateWidget.of(context)
-                    .setQuantity(AppStateScope.of(context).quantity-1);
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.remove,
-                color: Colors.white,
+      child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
+          builder: (context, state) {
+        return Row(
+          children: [
+            Text(
+              '數量',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            VerticalDivider(
+              color: Colors.grey,
+              thickness: 1,
+              indent: 16,
+              endIndent: 16,
+            ),
+            SizedBox(width: 8),
+            InkWell(
+              onTap: () {
+                if (state.detailState.quantity > 1) {
+                  context
+                      .read<ProductDetailBloc>()
+                      .add(SetQuantityEvent(state.detailState.quantity - 1));
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          Text(
-            '${AppStateScope.of(context).quantity}',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          InkWell(
-            onTap: () {
-              ColorOption colorOption = productItem
-                  .colorOption[AppStateScope.of(context).selectedColorIndex];
-              SizeOption sizeOption = colorOption
-                  .sizeOptions[AppStateScope.of(context).selectedSizeIndex];
+            SizedBox(
+              width: 16,
+            ),
+            Text(
+              '${state.detailState.quantity}',
+              
+            ),
+            SizedBox(
+              width: 16,
+            ),
+            InkWell(
+              onTap: () {
+                ColorOption colorOption = productItem
+                    .colorOption[state.detailState.selectedColorIndex];
+                    
+                SizeOption sizeOption = colorOption
+                    .sizeOptions[state.detailState.selectedSizeIndex];
 
-              if (AppStateScope.of(context).quantity < sizeOption.stock) {
-                AppStateWidget.of(context)
-                    .setQuantity(AppStateScope.of(context).quantity + 1);
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
+                if (state.detailState.quantity < sizeOption.stock) {
+                  context
+                      .read<ProductDetailBloc>()
+                      .add(SetQuantityEvent(state.detailState.quantity + 1));
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 }

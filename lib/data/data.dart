@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'cart_item.dart';
 import 'data_class.dart';
 
 List<CardItem> items = [

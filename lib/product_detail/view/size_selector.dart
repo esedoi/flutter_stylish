@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/product_detail/state_management/app_state_scope.dart';
-import 'package:flutter_stylish/product_detail/state_management/app_state_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stylish/data/data_class.dart';
 
+import '../bloc/product_detail_bloc.dart';
 
 class SizeSelector extends StatelessWidget {
-  const SizeSelector({Key? key}) : super(key: key);
+  final ProductItem productItem;
+
+  const SizeSelector({Key? key, required this.productItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +26,38 @@ class SizeSelector extends StatelessWidget {
             endIndent: 16,
           ),
           SizedBox(width: 8),
-          Wrap(
-            spacing: 8,
-            children: AppStateScope.of(context)
-                .availableSizes
-                .map(
-                  (sizeOption) => ChoiceChip(
-                    label: Text(sizeOption.size),
-                    selected: AppStateScope.of(context).selectedSizeIndex ==
-                        AppStateScope.of(context)
-                            .availableSizes
-                            .indexOf(sizeOption),
-                    onSelected: (isSelected) {
-                      AppStateWidget.of(context).setSelectedSizeIndex(
-                          AppStateScope.of(context)
-                              .availableSizes
-                              .indexOf(sizeOption));
-                      AppStateWidget.of(context).setQuantity(1);
-                    },
-                  ),
-                )
-                .toList(),
-          ),
+          BlocBuilder<ProductDetailBloc, ProductDetailState>(
+            builder: (context, state) {
+              return Wrap(
+                spacing: 8,
+                children: productItem
+                    .colorOption[state.detailState.selectedColorIndex]
+                    .sizeOptions
+                    // state.detailState.availableSizes
+                    .map(
+                      (sizeOption) => ChoiceChip(
+                        label: Text(
+                          sizeOption.size,
+                        ),
+                        selected: state.detailState.selectedSizeIndex ==
+                            state.detailState.availableSizes
+                                .indexOf(sizeOption),
+                        onSelected: (isSelected) {
+                          context.read<ProductDetailBloc>().add(
+                              SetSelectedSizeIndexEvent(state
+                                  .detailState.availableSizes
+                                  .indexOf(sizeOption)));
+
+                          context
+                              .read<ProductDetailBloc>()
+                              .add(SetQuantityEvent(1));
+                        },
+                      ),
+                    )
+                    .toList(),
+              );
+            },
+          )
         ],
       ),
     );

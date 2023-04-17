@@ -1,51 +1,21 @@
 
+import 'package:equatable/equatable.dart';
+
 import '../../data/data_class.dart';
 
-class AppState {
-  AppState(
-      {this.quantity = 1,
-      this.selectedColorIndex = 1,
-      this.selectedSizeIndex = 1,
-      this.availableSizes = const <SizeOption>[],
-      this.maxQuantity = 0,
-      required this.productItem});
 
-  int quantity = 1;
-  int selectedColorIndex = 1;
-  int selectedSizeIndex = 1;
-  List<SizeOption> availableSizes;
-  int maxQuantity;
-  ProductItem productItem;
-
-  AppState copyWith({
-    int? quantity,
-    int? selectedColorIndex,
-    int? selectedSizeIndex,
-    List<SizeOption>? availableSizes,
-    int? maxQuantity,
-  }) {
-    return AppState(
-        quantity: quantity ?? this.quantity,
-        selectedColorIndex: selectedColorIndex ?? this.selectedColorIndex,
-        selectedSizeIndex: selectedSizeIndex ?? this.selectedSizeIndex,
-        availableSizes: availableSizes ?? this.availableSizes,
-        maxQuantity: maxQuantity ?? this.maxQuantity,
-        productItem: productItem);
-  }
-}
-
-class DetailState {
+class DetailState extends  Equatable {
   DetailState(
       {this.quantity = 1,
-      this.selectedColorIndex = 1,
-      this.selectedSizeIndex = 1,
+      this.selectedColorIndex = 0,
+      this.selectedSizeIndex = 0,
       this.availableSizes = const <SizeOption>[],
-      this.maxQuantity = 0,
+      this.maxQuantity = 1,
     });
 
   int quantity = 1;
-  int selectedColorIndex = 1;
-  int selectedSizeIndex = 1;
+  int selectedColorIndex = 0;
+  int selectedSizeIndex = 0;
   List<SizeOption> availableSizes;
   int maxQuantity;
   
@@ -65,4 +35,7 @@ class DetailState {
         maxQuantity: maxQuantity ?? this.maxQuantity,
         );
   }
+  
+  @override
+  List<Object?> get props => [quantity, selectedColorIndex, selectedSizeIndex,availableSizes,maxQuantity ];
 }

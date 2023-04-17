@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_stylish/product_detail/state_management/app_state_widget.dart';
 import 'package:flutter_stylish/product_detail/view/quata_selector.dart';
 import 'package:flutter_stylish/product_detail/view/size_selector.dart';
 
@@ -17,24 +15,24 @@ class ProductDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (BuildContext context) => ProductDetailBloc(productItem),
-        child: Scaffold(
-      appBar: AppBar(
-        title: Text('Product Details'),
-      ),
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final bool isLargeScreen = constraints.maxWidth >= 650;
+      create: (BuildContext context) => ProductDetailBloc(productItem),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Product Details'),
+        ),
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final bool isLargeScreen = constraints.maxWidth >= 650;
 
-          if (isLargeScreen) {
-            return HorizontalDetail(productItem: productItem);
-          } else {
-            return VerticalDetail(productItem: productItem);
-          }
-        },
+            if (isLargeScreen) {
+              return HorizontalDetail(productItem: productItem);
+            } else {
+              return VerticalDetail(productItem: productItem);
+            }
+          },
+        ),
       ),
-    ),
-      );
+    );
   }
 }
 
@@ -63,9 +61,7 @@ class VerticalDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppStateWidget(
-                    productItem: productItem,
-                    child: ProductInfo(productItem: productItem)),
+                ProductInfo(productItem: productItem),
               ],
             ),
           ),
@@ -104,9 +100,7 @@ class HorizontalDetail extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppStateWidget(
-                        productItem: productItem,
-                        child: ProductInfo(productItem: productItem)),
+                    ProductInfo(productItem: productItem),
                   ],
                 ),
               ),
@@ -154,11 +148,11 @@ class ProductInfo extends StatelessWidget {
             thickness: 1,
           ),
           SizedBox(height: 16),
-          ColorSelector(),
+          ColorSelector(productItem: productItem),
           SizedBox(height: 16),
-          SizeSelector(),
+          SizeSelector(productItem: productItem),
           SizedBox(height: 16),
-          QuataSelector(),
+          QuataSelector(productItem: productItem),
           MaterialButton(
             minWidth: 300.0,
             height: 50.0,
