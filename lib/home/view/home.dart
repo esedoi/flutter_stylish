@@ -144,8 +144,10 @@ class HorizontalView extends StatelessWidget {
                         }
                         if (state is DataLoadedState) {
                           return ListView.separated(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.all(16),
+                            scrollDirection: Axis.vertical,
+                            // shrinkWrap: true,
+                            // physics: NeverScrollableScrollPhysics(),
                             separatorBuilder: (context, _) => SizedBox(
                               height: 12,
                             ),
@@ -180,9 +182,12 @@ class HorizontalView extends StatelessWidget {
                             return const CircularProgressIndicator();
                           }
                           if (state is DataLoadedState) {
+                            
                             return ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.all(16),
+                          scrollDirection: Axis.vertical,
+                              // shrinkWrap: true,
+                              // physics: NeverScrollableScrollPhysics(),
                               separatorBuilder: (context, _) => SizedBox(
                                 height: 12,
                               ),
@@ -219,8 +224,10 @@ class HorizontalView extends StatelessWidget {
                           }
                           if (state is DataLoadedState) {
                             return ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.all(16),
+                          scrollDirection: Axis.vertical,
+                              // shrinkWrap: true,
+                              // physics: NeverScrollableScrollPhysics(),
                               separatorBuilder: (context, _) => SizedBox(
                                 height: 12,
                               ),
