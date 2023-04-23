@@ -1,7 +1,7 @@
 part of 'product_detail_bloc.dart';
 
 abstract class ProductDetailState extends Equatable {
-  // final int selectedColorIndex;
+
   final DetailState detailState;
   const ProductDetailState(this.detailState);
 

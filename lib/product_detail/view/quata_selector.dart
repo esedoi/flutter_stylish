@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/data_class.dart';
+import '../../model/product_obj.dart';
+import '../../model/variant_obj.dart';
 import '../bloc/product_detail_bloc.dart';
 
 class QuataSelector extends StatelessWidget {
-  final ProductItem productItem;
-  const QuataSelector({Key? key, required this.productItem}) : super(key: key);
+  final Product product;
+  const QuataSelector({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // final ProductItem productItem = AppStateScope.of(context).productItem;
     return SizedBox(
       height: 50,
       child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
@@ -52,20 +53,27 @@ class QuataSelector extends StatelessWidget {
             ),
             Text(
               '${state.detailState.quantity}',
-              
             ),
             SizedBox(
               width: 16,
             ),
             InkWell(
               onTap: () {
-                ColorOption colorOption = productItem
-                    .colorOption[state.detailState.selectedColorIndex];
-                    
-                SizeOption sizeOption = colorOption
-                    .sizeOptions[state.detailState.selectedSizeIndex];
+                int getStock(List<Variant> variants, String selectedColor,
+                    String selectedSize) {
+                  for (var variant in variants) {
+                    if (variant.colorCode == selectedColor &&
+                        variant.size == selectedSize) {
+                      return variant.stock ?? 0;
+                    }
+                  }
+                  return 0;
+                }
 
-                if (state.detailState.quantity < sizeOption.stock) {
+                if (state.detailState.quantity <
+                    getStock(product.variants!, 
+                    state.detailState.selectedColor,
+                        state.detailState.selectedSize)) {
                   context
                       .read<ProductDetailBloc>()
                       .add(SetQuantityEvent(state.detailState.quantity + 1));

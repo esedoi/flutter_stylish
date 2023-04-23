@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/data_class.dart';
+import '../../model/product_obj.dart';
 import '../bloc/product_detail_bloc.dart';
 
 class ColorSelector extends StatelessWidget {
-  final ProductItem productItem;
-  const ColorSelector({Key? key, required this.productItem}) : super(key: key);
+  final Product product;
+  const ColorSelector({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +29,15 @@ class ColorSelector extends StatelessWidget {
             return Wrap(
               spacing: 8,
               children: List<Widget>.generate(
-                productItem.colorOption.length,
+                product.colors!.length,
                 (index) {
-                  Color color = productItem.colorOption[index].color;
+                  String code = product.colors![index]['code'];
+                  Color color = hexToColor(code);
                   return GestureDetector(
                     onTap: () {
                       context
                           .read<ProductDetailBloc>()
-                          .add(SetSelectedColorIndexEvent(index));
+                          .add(SetSelectedColorEvent(code));
                       context
                           .read<ProductDetailBloc>()
                           .add(SetSelectedSizeIndexEvent(0));
@@ -50,7 +51,7 @@ class ColorSelector extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: color,
                         border: Border.all(
-                          color: state.detailState.selectedColorIndex == index
+                          color: state.detailState.selectedColor == code
                               ? Colors.red
                               : Colors.transparent,
                           width: 2,
@@ -66,4 +67,12 @@ class ColorSelector extends StatelessWidget {
       ),
     );
   }
+}
+
+Color hexToColor(String hexString) {
+  String hex = hexString.toUpperCase().replaceAll("#", "");
+  if (hex.length == 6) {
+    hex = "FF" + hex;
+  }
+  return Color(int.parse(hex, radix: 16));
 }

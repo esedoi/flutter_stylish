@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stylish/data/data_class.dart';
 
+import '../../model/product_obj.dart';
 import '../bloc/product_detail_bloc.dart';
 
 class SizeSelector extends StatelessWidget {
-  final ProductItem productItem;
+  final Product product;
 
-  const SizeSelector({Key? key, required this.productItem}) : super(key: key);
+  const SizeSelector({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +31,22 @@ class SizeSelector extends StatelessWidget {
             builder: (context, state) {
               return Wrap(
                 spacing: 8,
-                children: productItem
-                    .colorOption[state.detailState.selectedColorIndex]
-                    .sizeOptions
+                children: product.sizes!
+
                     // state.detailState.availableSizes
                     .map(
-                      (sizeOption) => ChoiceChip(
+                      (size) => ChoiceChip(
                         label: Text(
-                          sizeOption.size,
+                          size,
                         ),
-                        selected: state.detailState.selectedSizeIndex ==
-                            state.detailState.availableSizes
-                                .indexOf(sizeOption),
+                        selected: state.detailState.selectedSize==
+                            size,
+
                         onSelected: (isSelected) {
                           context.read<ProductDetailBloc>().add(
-                              SetSelectedSizeIndexEvent(state
-                                  .detailState.availableSizes
-                                  .indexOf(sizeOption)));
+                              SetSelectedSizeEvent(size
+                                  )
+                                  );
 
                           context
                               .read<ProductDetailBloc>()

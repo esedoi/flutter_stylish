@@ -11,6 +11,8 @@ class DetailState extends  Equatable {
       this.selectedSizeIndex = 0,
       this.availableSizes = const <SizeOption>[],
       this.maxQuantity = 1,
+      this.selectedColor="",
+      this.selectedSize="",
     });
 
   int quantity = 1;
@@ -18,6 +20,8 @@ class DetailState extends  Equatable {
   int selectedSizeIndex = 0;
   List<SizeOption> availableSizes;
   int maxQuantity;
+  String selectedColor = "";
+  String selectedSize = "";
   
 
   DetailState copyWith({
@@ -26,6 +30,8 @@ class DetailState extends  Equatable {
     int? selectedSizeIndex,
     List<SizeOption>? availableSizes,
     int? maxQuantity,
+    String? selectedColor,
+    String? selectedSize,
   }) {
     return DetailState(
         quantity: quantity ?? this.quantity,
@@ -33,9 +39,11 @@ class DetailState extends  Equatable {
         selectedSizeIndex: selectedSizeIndex ?? this.selectedSizeIndex,
         availableSizes: availableSizes ?? this.availableSizes,
         maxQuantity: maxQuantity ?? this.maxQuantity,
+        selectedColor: selectedColor ?? this.selectedColor,
+        selectedSize: selectedSize ?? this.selectedSize
         );
   }
   
   @override
-  List<Object?> get props => [quantity, selectedColorIndex, selectedSizeIndex,availableSizes,maxQuantity ];
+  List<Object?> get props => [quantity, selectedColorIndex, selectedSizeIndex,availableSizes,maxQuantity, selectedColor, selectedSize ];
 }

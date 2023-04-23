@@ -3,19 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stylish/product_detail/view/quata_selector.dart';
 import 'package:flutter_stylish/product_detail/view/size_selector.dart';
 
-import '../../data/data_class.dart';
+import '../../model/product_obj.dart';
 import '../bloc/product_detail_bloc.dart';
 import 'color_selector.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  final ProductItem productItem;
+  final Product product;
 
-  ProductDetailsScreen({Key? key, required this.productItem}) : super(key: key);
+  ProductDetailsScreen({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => ProductDetailBloc(productItem),
+      create: (BuildContext context) => ProductDetailBloc(product),
       child: Scaffold(
         appBar: AppBar(
           title: Text('Product Details'),
@@ -25,9 +25,9 @@ class ProductDetailsScreen extends StatelessWidget {
             final bool isLargeScreen = constraints.maxWidth >= 650;
 
             if (isLargeScreen) {
-              return HorizontalDetail(productItem: productItem);
+              return HorizontalDetail(product: product);
             } else {
-              return VerticalDetail(productItem: productItem);
+              return VerticalDetail(product: product);
             }
           },
         ),
@@ -37,8 +37,8 @@ class ProductDetailsScreen extends StatelessWidget {
 }
 
 class VerticalDetail extends StatelessWidget {
-  final ProductItem productItem;
-  VerticalDetail({Key? key, required this.productItem}) : super(key: key);
+  final Product product;
+  VerticalDetail({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class VerticalDetail extends StatelessWidget {
             child: AspectRatio(
               aspectRatio: 3 / 4,
               child: Image.network(
-                productItem.urlImg,
+                product.mainImage!,
                 fit: BoxFit.cover,
               ),
             ),
@@ -61,11 +61,11 @@ class VerticalDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProductInfo(productItem: productItem),
+                ProductInfo(product: product),
               ],
             ),
           ),
-          MoreImages(productItem: productItem),
+          MoreImages(product: product),
         ],
       ),
     );
@@ -73,8 +73,8 @@ class VerticalDetail extends StatelessWidget {
 }
 
 class HorizontalDetail extends StatelessWidget {
-  final ProductItem productItem;
-  HorizontalDetail({Key? key, required this.productItem}) : super(key: key);
+  final Product product;
+  HorizontalDetail({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +90,7 @@ class HorizontalDetail extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 3 / 4,
                   child: Image.network(
-                    productItem.urlImg,
+                    product.mainImage!,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -100,13 +100,13 @@ class HorizontalDetail extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ProductInfo(productItem: productItem),
+                    ProductInfo(product: product),
                   ],
                 ),
               ),
             ],
           ),
-          MoreImages(productItem: productItem),
+          MoreImages(product: product),
         ],
       ),
     );
@@ -114,8 +114,8 @@ class HorizontalDetail extends StatelessWidget {
 }
 
 class ProductInfo extends StatelessWidget {
-  final ProductItem productItem;
-  ProductInfo({Key? key, required this.productItem}) : super(key: key);
+  final Product product;
+  ProductInfo({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,7 @@ class ProductInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            productItem.title,
+            product.title!,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24.0,
@@ -134,12 +134,12 @@ class ProductInfo extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            productItem.productNumber,
+            product.price.toString(),
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 8),
           Text(
-            productItem.subtitle,
+            product.description!,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(height: 8),
@@ -148,11 +148,11 @@ class ProductInfo extends StatelessWidget {
             thickness: 1,
           ),
           SizedBox(height: 16),
-          ColorSelector(productItem: productItem),
+          ColorSelector(product: product),
           SizedBox(height: 16),
-          SizeSelector(productItem: productItem),
+          SizeSelector(product: product),
           SizedBox(height: 16),
-          QuataSelector(productItem: productItem),
+          QuataSelector(product: product),
           MaterialButton(
             minWidth: 300.0,
             height: 50.0,
@@ -168,7 +168,7 @@ class ProductInfo extends StatelessWidget {
             ),
           ),
           Text(
-            productItem.descriptions,
+            product.description!,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           SizedBox(height: 16),
@@ -179,8 +179,8 @@ class ProductInfo extends StatelessWidget {
 }
 
 class MoreImages extends StatelessWidget {
-  final ProductItem productItem;
-  MoreImages({Key? key, required this.productItem}) : super(key: key);
+  final Product product;
+  MoreImages({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -200,14 +200,14 @@ class MoreImages extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: productItem.moreImgs.length,
+              itemCount: product.images!.length,
               itemBuilder: (context, index) {
                 return AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Container(
                     margin: EdgeInsets.only(right: 16),
                     child: Image.network(
-                      productItem.moreImgs[index],
+                      product.images![index],
                       fit: BoxFit.cover,
                     ),
                   ),

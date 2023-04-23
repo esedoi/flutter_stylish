@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../data/data.dart';
-import '../data/data_class.dart';
-import '../model/product_obj.dart';
-import '../product_detail/view/detail_page.dart';
-import 'bloc/home_bloc.dart';
+import '../../model/product_obj.dart';
+import '../../product_detail/view/detail_page.dart';
+import '../bloc/home_bloc.dart';
 
 Widget buildCard({
   required Product product,
@@ -34,12 +32,12 @@ Widget buildProduct({
             ),
         child: InkWell(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => ProductDetailsScreen(productItem: item),
-            //   ),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDetailsScreen(product: product),
+              ),
+            );
           },
           child: Container(
             height: 100,
