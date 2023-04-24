@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../model/product_obj.dart';
+import '../../platform_chanel.dart';
 import '../../product_detail/view/detail_page.dart';
 import '../bloc/home_bloc.dart';
 
@@ -87,7 +89,8 @@ Widget buildProduct({
 
 class HorizontalView extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+   build(BuildContext context){
+ _loadNativeString();
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -104,7 +107,6 @@ class HorizontalView extends StatelessWidget {
       body: Column(
         children: <Widget>[
           BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      
             if (state is DataLoadingState) {
               return const CircularProgressIndicator();
             }
@@ -125,6 +127,7 @@ class HorizontalView extends StatelessWidget {
             }
             return Text("Something went wrong,sta =  ${state}!");
           }),
+          
           Expanded(
             child: Row(
               children: [
@@ -135,10 +138,10 @@ class HorizontalView extends StatelessWidget {
                     SizedBox(
                       height: 16,
                     ),
+                    
                     Expanded(
                       child: BlocBuilder<HomeBloc, HomeState>(
                           builder: (context, state) {
-                    
                         if (state is DataLoadingState) {
                           return const CircularProgressIndicator();
                         }
@@ -146,8 +149,6 @@ class HorizontalView extends StatelessWidget {
                           return ListView.separated(
                             padding: EdgeInsets.all(16),
                             scrollDirection: Axis.vertical,
-                            // shrinkWrap: true,
-                            // physics: NeverScrollableScrollPhysics(),
                             separatorBuilder: (context, _) => SizedBox(
                               height: 12,
                             ),
@@ -177,17 +178,13 @@ class HorizontalView extends StatelessWidget {
                       Expanded(
                         child: BlocBuilder<HomeBloc, HomeState>(
                             builder: (context, state) {
-                    
                           if (state is DataLoadingState) {
                             return const CircularProgressIndicator();
                           }
                           if (state is DataLoadedState) {
-                            
                             return ListView.separated(
                               padding: EdgeInsets.all(16),
-                          scrollDirection: Axis.vertical,
-                              // shrinkWrap: true,
-                              // physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
                               separatorBuilder: (context, _) => SizedBox(
                                 height: 12,
                               ),
@@ -218,16 +215,13 @@ class HorizontalView extends StatelessWidget {
                       Expanded(
                         child: BlocBuilder<HomeBloc, HomeState>(
                             builder: (context, state) {
-                    
                           if (state is DataLoadingState) {
                             return const CircularProgressIndicator();
                           }
                           if (state is DataLoadedState) {
                             return ListView.separated(
                               padding: EdgeInsets.all(16),
-                          scrollDirection: Axis.vertical,
-                              // shrinkWrap: true,
-                              // physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
                               separatorBuilder: (context, _) => SizedBox(
                                 height: 12,
                               ),
@@ -257,6 +251,7 @@ class HorizontalView extends StatelessWidget {
 class VerticalView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+     _loadNativeString();
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -273,7 +268,6 @@ class VerticalView extends StatelessWidget {
       body: Column(
         children: <Widget>[
           BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-            
             if (state is DataLoadingState) {
               return const CircularProgressIndicator();
             }
@@ -319,7 +313,8 @@ class VerticalView extends StatelessWidget {
                         itemCount: state.menProducts.length,
                         itemBuilder: (context, index) {
                           return buildProduct(
-                              context: context, product: state.menProducts[index]);
+                              context: context,
+                              product: state.menProducts[index]);
                         },
                       );
                     }
@@ -334,7 +329,6 @@ class VerticalView extends StatelessWidget {
                     height: 12,
                   ),
                   BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-            
                     if (state is DataLoadingState) {
                       return const CircularProgressIndicator();
                     }
@@ -348,7 +342,8 @@ class VerticalView extends StatelessWidget {
                         itemCount: state.womenProducts.length,
                         itemBuilder: (context, index) {
                           return buildProduct(
-                              context: context, product: state.womenProducts[index]);
+                              context: context,
+                              product: state.womenProducts[index]);
                         },
                       );
                     }
@@ -363,7 +358,6 @@ class VerticalView extends StatelessWidget {
                     height: 12,
                   ),
                   BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-                  
                     if (state is DataLoadingState) {
                       return const CircularProgressIndicator();
                     }
@@ -376,9 +370,9 @@ class VerticalView extends StatelessWidget {
                         ),
                         itemCount: state.accessoriesProducts.length,
                         itemBuilder: (context, index) {
-                          
                           return buildProduct(
-                              context: context, product: state.accessoriesProducts[index]);
+                              context: context,
+                              product: state.accessoriesProducts[index]);
                         },
                       );
                     }
@@ -393,3 +387,9 @@ class VerticalView extends StatelessWidget {
     );
   }
 }
+
+Future<void> _loadNativeString() async {
+    String nativeString = await getNativeString();
+    print(nativeString);
+    
+  }

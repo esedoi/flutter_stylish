@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
         ),
         home: BlocProvider(
           create: (BuildContext context) => HomeBloc()..add(LoadDataEvent()),
-          child: LayoutBuilder(builder: (context, Constraints) {
-            if (Constraints.maxWidth >= 601) {
+          child: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth >= 601) {
               return HorizontalView();
             } else {
               return VerticalView();

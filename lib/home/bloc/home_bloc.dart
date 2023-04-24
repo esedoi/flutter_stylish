@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -6,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_stylish/model/collection.dart';
 import 'package:flutter_stylish/model/product_response.dart';
 
-import '../../http_service/http_service.dart';
 import '../../model/hots_response.dart';
 import '../../model/product_obj.dart';
 
