@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stylish/web_rtc/WebRTC.dart';
 
 import 'home/bloc/home_bloc.dart';
 import 'home/view/home.dart';
@@ -28,24 +29,25 @@ class MyApp extends StatelessWidget {
             if (constraints.maxWidth >= 601) {
               return HorizontalView();
             } else {
-              return MyHomePage(title: 'sample code',);
+              return MyHomePage(title: 'webrtc',);
             }
           }),
-        ));
+        )
+        );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MyHomePageTap extends StatefulWidget {
+  const MyHomePageTap({super.key, required this.title});
 
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePageTap> createState() => _MyHomePageStateTap();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageStateTap extends State<MyHomePageTap> {
   int _counter = 0;
 
   void _incrementCounter() {
