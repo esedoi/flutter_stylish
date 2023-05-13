@@ -3,7 +3,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'dart:convert';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-//git test
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -41,9 +41,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _initWebSocket() {
-    _channel = IOWebSocketChannel.connect('ws://192.168.20.98:8080');
+    //IP 地址:在teminal 輸入 ifconfig (mac) ，將顯示類似於 192.168.x.x
+    _channel = IOWebSocketChannel.connect('ws://10.102.13.150:8080');
     _channel.stream.listen((event) {
       final message = jsonDecode(event);
+      print(message);
+      print(message['type']);
       switch (message['type']) {
         case 'init':
           isCaller = message['isCaller']; // 根據從服務器接收到的消息設置角色
@@ -150,7 +153,6 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           _remoteRenderer.srcObject = event.streams[0];
         });
-        // _remoteRenderer.srcObject = event.streams[0];
       }
     };
 
@@ -220,15 +222,6 @@ class _MyHomePageState extends State<MyHomePage> {
     await peerConnection.addCandidate(candidate);
   }
 
-  _createConnection() async {
-    final offer = await _createOffer();
-
-    // Send offer to remote peer
-
-    // Wait for and handle answer from remote peer
-
-    // Wait for and handle ICE candidates from remote peer
-  }
 
   _disconnect() async {
     if (_peerConnection != null) {
