@@ -1,6 +1,6 @@
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math.dart' as vector;
+import 'package:vector_math/vector_math_64.dart' as vector;
 
 
 
@@ -16,6 +16,7 @@ class ARCorePage extends StatefulWidget {
 class _ARCorePageState extends State<ARCorePage> {
 
     late ArCoreController arCoreController;
+ 
 
    @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class _ARCorePageState extends State<ARCorePage> {
     );
     final node = ArCoreNode(
       shape: sphere,
-      position: vector.Vector3?(0, 0, -1.5),
+      position: vector.Vector3(0, 0, -1.5),
     );
     controller.addArCoreNode(node);
   }
