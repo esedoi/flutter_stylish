@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
@@ -15,18 +17,45 @@ class ARCorePage extends StatefulWidget {
 
 class _ARCorePageState extends State<ARCorePage> {
 
-    late ArCoreController arCoreController;
- 
+   ArCoreController? arCoreController;
+  ArCoreNode? sphereNode;
 
-   @override
+  double metallic = 0.0;
+  double roughness = 0.4;
+  double reflectance = 0.5;
+  Color color = Colors.yellow;
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Hello World'),
+          title: const Text('Materials Runtime Change'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.update),
+              onPressed: () {},
+            )
+          ],
         ),
-        body: ArCoreView(
-          onArCoreViewCreated: _onArCoreViewCreated,
+        body: Column(
+          children: <Widget>[
+            SphereControl(
+              initialColor: color,
+              initialMetallicValue: metallic,
+              initialRoughnessValue: roughness,
+              initialReflectanceValue: reflectance,
+              onColorChange: onColorChange,
+              onMetallicChange: onMetallicChange,
+              onRoughnessChange: onRoughnessChange,
+              onReflectanceChange: onReflectanceChange,
+            ),
+            Expanded(
+              child: ArCoreView(
+                onArCoreViewCreated: _onArCoreViewCreated,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -35,63 +64,199 @@ class _ARCorePageState extends State<ARCorePage> {
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
 
-    _addSphere(arCoreController);
-    _addCylindre(arCoreController);
-    _addCube(arCoreController);
+    _addSphere();
   }
 
-  void _addSphere(ArCoreController controller) {
+  void _addSphere() {
     final material = ArCoreMaterial(
-        color: Color.fromARGB(120, 66, 134, 244));
+      color: Colors.yellow,
+    );
     final sphere = ArCoreSphere(
       materials: [material],
       radius: 0.1,
     );
-    final node = ArCoreNode(
+    sphereNode = ArCoreNode(
       shape: sphere,
       position: vector.Vector3(0, 0, -1.5),
     );
-    controller.addArCoreNode(node);
+    arCoreController?.addArCoreNode(sphereNode!);
   }
 
-  void _addCylindre(ArCoreController controller) {
-    final material = ArCoreMaterial(
-      color: Colors.red,
-      reflectance: 1.0,
-    );
-    final cylindre = ArCoreCylinder(
-      materials: [material],
-      radius: 0.5,
-      height: 0.3,
-    );
-    final node = ArCoreNode(
-      shape: cylindre,
-      position: vector.Vector3(0.0, -0.5, -2.0),
-    );
-    controller.addArCoreNode(node);
+  onColorChange(Color newColor) {
+    if (newColor != this.color) {
+      this.color = newColor;
+      updateMaterials();
+    }
   }
 
-  void _addCube(ArCoreController controller) {
+  onMetallicChange(double newMetallic) {
+    if (newMetallic != this.metallic) {
+      metallic = newMetallic;
+      updateMaterials();
+    }
+  }
+
+  onRoughnessChange(double newRoughness) {
+    if (newRoughness != this.roughness) {
+      this.roughness = newRoughness;
+      updateMaterials();
+    }
+  }
+
+  onReflectanceChange(double newReflectance) {
+    if (newReflectance != this.reflectance) {
+      this.reflectance = newReflectance;
+      updateMaterials();
+    }
+  }
+
+  updateMaterials() {
+    debugPrint("updateMaterials");
+    if (sphereNode == null) {
+      return;
+    }
+    debugPrint("updateMaterials sphere node not null");
     final material = ArCoreMaterial(
-      color: Color.fromARGB(120, 66, 134, 244),
-      metallic: 1.0,
+      color: color,
+      metallic: metallic,
+      roughness: roughness,
+      reflectance: reflectance,
     );
-    final cube = ArCoreCube(
-      materials: [material],
-      size: vector.Vector3(0.5, 0.5, 0.5),
-    
-    );
-    final node = ArCoreNode(
-      shape: cube,
-      position: vector.Vector3(-0.5, 0.5, -3.5),
-    );
-    controller.addArCoreNode(node);
+    sphereNode?.shape?.materials.value = [material];
   }
 
   @override
   void dispose() {
-    arCoreController.dispose();
+    arCoreController?.dispose();
     super.dispose();
+  }
+}
+
+class SphereControl extends StatefulWidget {
+  final double? initialRoughnessValue;
+  final double? initialReflectanceValue;
+  final double? initialMetallicValue;
+  final Color? initialColor;
+  final ValueChanged<Color>? onColorChange;
+  final ValueChanged<double>? onMetallicChange;
+  final ValueChanged<double>? onRoughnessChange;
+  final ValueChanged<double>? onReflectanceChange;
+
+  const SphereControl(
+      {Key? key,
+      this.initialRoughnessValue,
+      this.initialReflectanceValue,
+      this.initialMetallicValue,
+      this.initialColor,
+      this.onColorChange,
+      this.onMetallicChange,
+      this.onRoughnessChange,
+      this.onReflectanceChange})
+      : super(key: key);
+
+  @override
+  _SphereControlState createState() => _SphereControlState();
+}
+
+class _SphereControlState extends State<SphereControl> {
+  late double metallicValue;
+  late double roughnessValue;
+  late double reflectanceValue;
+  Color? color;
+
+  @override
+  void initState() {
+    roughnessValue = widget.initialRoughnessValue ?? 0.0;
+    reflectanceValue = widget.initialReflectanceValue ?? 0.0;
+    metallicValue = widget.initialRoughnessValue ?? 0.0;
+    color = widget.initialColor;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              ElevatedButton(
+                child: Text("Random Color"),
+                onPressed: () {
+                  final newColor = Colors.accents[Random().nextInt(14)];
+                  widget.onColorChange?.call(newColor);
+                  setState(() {
+                    color = newColor;
+                  });
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: CircleAvatar(
+                  radius: 20.0,
+                  backgroundColor: color,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text("Metallic"),
+              Checkbox(
+                value: metallicValue == 1.0,
+                onChanged: (value) {
+                  metallicValue = (value ?? false) ? 1.0 : 0.0;
+                  widget.onMetallicChange?.call(metallicValue);
+                  setState(() {});
+                },
+              )
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text("Roughness"),
+              Expanded(
+                child: Slider(
+                  value: roughnessValue,
+                  divisions: 10,
+                  onChangeEnd: (value) {
+                    roughnessValue = value;
+                    widget.onRoughnessChange?.call(roughnessValue);
+                  },
+                  onChanged: (double value) {
+                    setState(() {
+                      roughnessValue = value;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text("Reflectance"),
+              Expanded(
+                child: Slider(
+                  value: reflectanceValue,
+                  divisions: 10,
+                  onChangeEnd: (value) {
+                    reflectanceValue = value;
+                    widget.onReflectanceChange?.call(reflectanceValue);
+                  },
+                  onChanged: (double value) {
+                    setState(() {
+                      reflectanceValue = value;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 
